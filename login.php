@@ -1,4 +1,4 @@
-<?php require __DIR__.'/views/header.php'; ?>
+<?php require __DIR__ . '/views/header.php'; ?>
 
 <article>
     <h1>Login</h1>
@@ -18,6 +18,12 @@
 
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
+    <?php if (isset($_SESSION['errors'])) : ?>
+        <?php foreach ($_SESSION['errors'] as $error) : ?>
+            <?php echo $error; ?>
+        <?php endforeach; ?>
+        <?php unset($_SESSION['errors']); ?>
+    <?php endif; ?>
 </article>
 
-<?php require __DIR__.'/views/footer.php'; ?>
+<?php require __DIR__ . '/views/footer.php'; ?>
