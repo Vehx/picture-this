@@ -17,3 +17,21 @@ if (!function_exists('redirect')) {
         exit;
     }
 }
+
+if (!function_exists('showErrors')) {
+    /**
+     * If errors exists in $_SESSION['errors'] this function echo's them out.
+     * When done it empties $_SESSION['errors']
+     * 
+     * @return void
+     */
+    function showErrors()
+    {
+        if (isset($_SESSION['errors'])) {
+            foreach ($_SESSION['errors'] as $error) {
+                echo $error;
+            }
+            unset($_SESSION['errors']);
+        }
+    }
+}

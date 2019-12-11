@@ -18,12 +18,7 @@
 
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
-    <?php if (isset($_SESSION['errors'])) : ?>
-        <?php foreach ($_SESSION['errors'] as $error) : ?>
-            <?php echo $error; ?>
-        <?php endforeach; ?>
-        <?php unset($_SESSION['errors']); ?>
-    <?php endif; ?>
+    <?php showErrors(); ?>
 </article>
 
 <?php require __DIR__ . '/views/footer.php'; ?>
