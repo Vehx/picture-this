@@ -12,19 +12,23 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     $password = $_POST['password'];
     $passwordConfirm = $_POST['password-confirm'];
 
+    // check if name field is empty
     unset($_SESSION['error']);
     if ($name === '') {
         $_SESSION['errors'][] = "bad name";
     }
 
+    // check if email is valid and not empty
     if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $email === '') {
         $_SESSION['errors'][] = "bad email";
     }
 
+    // check that password is 4 characters or longer
     if (strlen($password) < 4 || strlen($passwordConfirm) < 4) {
         $_SESSION['errors'][] = "bad password";
     }
 
+    // here the errors if any stops the registering process and sends the user back to register.php with error messages
     if ($_SESSION['errors']) {
         // todo send information back so form doesnt need to be refilled
         // die(var_dump($_SESSION));
