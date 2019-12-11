@@ -10,12 +10,25 @@
             <a class="nav-link <?php echo $_SERVER['SCRIPT_NAME'] === '/about.php' ? 'active' : ''; ?>" href="/about.php">About</a>
         </li><!-- /nav-item -->
 
+        <?php if (isset($_SESSION['user'])) : ?>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $_SERVER['SCRIPT_NAME'] === '/profile.php' ? 'active' : ''; ?>" href="profile.php">Profile</a>
+            </li><!-- /nav-item -->
+        <?php endif; ?>
+
         <li class="nav-item">
-            <?php if (isset($_SESSION['user'])): ?>
+            <?php if (isset($_SESSION['user'])) : ?>
                 <a class="nav-link" href="/app/users/logout.php">Logout</a>
-            <?php else: ?>
+            <?php else : ?>
                 <a class="nav-link <?php echo $_SERVER['SCRIPT_NAME'] === '/login.php' ? 'active' : ''; ?>" href="login.php">Login</a>
             <?php endif; ?>
         </li><!-- /nav-item -->
+
+        <?php if (!isset($_SESSION['user'])) : ?>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $_SERVER['SCRIPT_NAME'] === '/register.php' ? 'active' : ''; ?>" href="register.php">Register</a>
+            </li><!-- /nav-item -->
+        <?php endif; ?>
+
     </ul><!-- /navbar-nav -->
 </nav><!-- /navbar -->
