@@ -12,6 +12,7 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     $password = $_POST['password'];
     $passwordConfirm = $_POST['password-confirm'];
 
+    // todo send information back so form doesnt need to be refilled
     // check if name field is empty
     unset($_SESSION['error']);
     if ($name === '') {
@@ -48,17 +49,8 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
         redirect('/register.php');
     }
 
-    // here the errors if any stops the registering process and sends the user back to register.php with error messages
-    // if ($_SESSION['errors']) {
-    // todo send information back so form doesnt need to be refilled
-    // die(var_dump($_SESSION));
-    //     redirect('/register.php');
-    // }
-
     // password gets hashed before being put in database
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-    die(var_dump($name, $email, $hashedPassword));
 
     // new user gets entered into database
     $statement = $pdo->prepare('INSERT INTO users ( name, email, password, biography, avatar) values ( :name, :email, :password, null, null)');
@@ -93,5 +85,4 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     }
 }
 
-die(var_dump($_POST, $_SESSION));
 redirect('/');
