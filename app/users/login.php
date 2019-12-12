@@ -16,7 +16,7 @@ if (isset($_POST['email'], $_POST['password'])) {
     $password = $_POST['password'];
 
     // make sure email isn't an empty string
-    if ($email = '') {
+    if ($email === '') {
         $_SESSION['errors'][] = 'Error: Please enter a valid email.';
         redirect('/login.php');
     }
@@ -30,7 +30,7 @@ if (isset($_POST['email'], $_POST['password'])) {
     // checks if a user was not found in the database
     // redirects with error if user was not found
     if (!$user) {
-        $_SESSION['errors'][] = "Error: incorrect email and/or password.";
+        $_SESSION['errors'][] = "Error: incorrect email and/or password. user not found";
         redirect('/login.php');
     }
 
@@ -41,7 +41,7 @@ if (isset($_POST['email'], $_POST['password'])) {
         unset($user['password']);
         $_SESSION['user'] = $user;
     } else {
-        $_SESSION['errors'][] = "Error: incorrect email and/or password.";
+        $_SESSION['errors'][] = "Error: incorrect email and/or password. password missmatch";
         redirect('/login.php');
     }
 }
