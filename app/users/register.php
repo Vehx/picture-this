@@ -44,6 +44,7 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     die(var_dump($name, $email, $hashedPassword));
+
     // new user gets entered into database
     $statement = $pdo->prepare('INSERT INTO users ( name, email, password, biography, avatar) values ( :name, :email, :password, null, null)');
     $statement->bindParam(':name', $name, PDO::PARAM_STR);

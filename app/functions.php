@@ -22,7 +22,7 @@ if (!function_exists('showErrors')) {
     /**
      * If errors exists in $_SESSION['errors'] this function echo's them out.
      * When done it empties $_SESSION['errors']
-     * 
+     *
      * @return void
      */
     function showErrors()
@@ -33,5 +33,17 @@ if (!function_exists('showErrors')) {
             }
             unset($_SESSION['errors']);
         }
+    }
+}
+
+if (!function_exists('isLoggedIn')) {
+    /**
+     * Checks if user is logged in or not, returns true or false.
+     *
+     * @return bool
+     */
+    function isLoggedIn()
+    {
+        // todo add logic for function
     }
 }
