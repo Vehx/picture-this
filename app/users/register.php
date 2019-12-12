@@ -16,29 +16,44 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     unset($_SESSION['error']);
     if ($name === '') {
         $_SESSION['errors'][] = "Error: Please enter your name.";
+        redirect('/register.php');
     }
 
     // check if email is valid and not empty
     if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $email === '') {
         $_SESSION['errors'][] = "Error: Please enter a valid email.";
+        redirect('/register.php');
     }
 
     // check that password is 4 characters or longer
     if (strlen($password) < 4 || strlen($passwordConfirm) < 4) {
         $_SESSION['errors'][] = "Error: Password needs to be 4 characters or longer.";
+        redirect('/register.php');
     }
 
     // check that both passwords are the same to confirm that the user knows what their password will be
     if (!$password === $passwordConfirm) {
         $_SESSION['errors'][] = "Error: Passwords don't match, please try again.";
+        redirect('/register.php');
+    }
+
+    // checks if email already is registerd in database
+    // todo make this into a function
+    $statement = $pdo->prepare('SELECT * FROM users WHERE email = :email');
+    $statement->bindParam(':email', $email, PDO::PARAM_STR);
+    $statement->execute();
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+    if ($user['email'] === $email) {
+        $_SESSION['errors'][] = "Error: Email is already registered.";
+        redirect('/register.php');
     }
 
     // here the errors if any stops the registering process and sends the user back to register.php with error messages
-    if ($_SESSION['errors']) {
-        // todo send information back so form doesnt need to be refilled
-        // die(var_dump($_SESSION));
-        redirect('/register.php');
-    }
+    // if ($_SESSION['errors']) {
+    // todo send information back so form doesnt need to be refilled
+    // die(var_dump($_SESSION));
+    //     redirect('/register.php');
+    // }
 
     // password gets hashed before being put in database
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
