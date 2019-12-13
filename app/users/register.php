@@ -59,6 +59,7 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     $statement->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
     $statement->execute();
 
+    // todo make this just grab last created id
     // new user is grabbed from database to log user in and to verify everything worked
     $statement = $pdo->prepare('SELECT * FROM users WHERE email = :email');
     $statement->bindParam(':email', $email, PDO::PARAM_STR);

@@ -1,1 +1,5 @@
 /* In this file you can add your custom styles. */
+
+.hidden {
+    display: none;
+}
