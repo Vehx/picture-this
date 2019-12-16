@@ -53,7 +53,8 @@ if (!function_exists('guidv4')) {
      * This creates a uuid for image names using com_create_guid on windows.
      * With a linux fallback using openssl.
      *
-     * @return void
+     * Returns generated uuid as a string.
+     * @return string
      */
     function guidv4()
     {

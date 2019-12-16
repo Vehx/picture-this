@@ -28,22 +28,27 @@ if (isset($_POST['title'], $_FILES['image'])) {
     // we grab the current users id to make the post theirs in the database
     $userId = $_SESSION['user']['id'];
 
+    // image name is set to a uuid before stored in uploads folder and database
+    $uuidGen = explode('.', $image['name']);
+    $uuidGen[0] = guidv4();
+    $image['name'] = $uuidGen[0] . '.' . $uuidGen[1];
+
     // the image path is set with its name and saved in variable for use when storing information in database
-    $picture = '../database/uploads/posts/' . $image['name'];
+    $imagePath = '../database/uploads/posts/' . $image['name'];
 
     // image is moved to storage in file structure
     move_uploaded_file(
         $image['tmp_name'],
-        $picture
+        $imagePath
     );
 
-    die(var_dump($picture, $userId, $title, $hashtags));
+    die(var_dump($imagePath, $userId, $title, $hashtags, $image));
 
     // information about post is saved in database, note keywords/hashtags is optional
     //     $statement = $pdo->prepare('INSERT INTO posts (user_id, title, picture, keywords) VALUES (:user_id, :title, :picture, :keywords)');
     //     $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
     //     $statement->bindParam(':title', $title, PDO::PARAM_STR);
-    //     $statement->bindParam(':picture', $picture, PDO::PARAM_STR);
+    //     $statement->bindParam(':picture', $imagePath, PDO::PARAM_STR);
     //     if ($hashtagsExist) {
     //         $statement->bindParam(':keywords', $hashtags, PDO::PARAM_STR);
     //     }
