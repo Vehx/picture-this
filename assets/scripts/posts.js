@@ -1,5 +1,6 @@
 "use strict";
 
+// in this file posts are fetched if any exsists and then made into post elements and placed in the dom post-container
 const url = "/app/posts/read.php";
 
 fetch(url)
@@ -18,8 +19,12 @@ fetch(url)
                 let h3 = document.createElement("h3");
                 let like = document.createElement("button");
                 let dislike = document.createElement("button");
+                let comment = document.createElement("button");
 
                 // elements are populated with data and classes
+                newPost.className = "post";
+                newPost.setAttribute("data-id", post.id);
+
                 h2.textContent = post.title;
                 h2.className = "post__title";
 
@@ -38,6 +43,8 @@ fetch(url)
                 dislike.textContent = "Dislike";
                 dislike.className = "btn btn-secondary post__like-btn";
 
+                comment.textContent = "Comment";
+                comment.className = "btn btn-secondary post__comment-btn";
                 // elements gets put inside post div
                 newPost.appendChild(h2);
                 newPost.appendChild(a);
@@ -45,6 +52,7 @@ fetch(url)
                 newPost.appendChild(h3);
                 newPost.appendChild(like);
                 newPost.appendChild(dislike);
+                newPost.appendChild(comment);
 
                 // post div is put in dom
                 postContainer.appendChild(newPost);
