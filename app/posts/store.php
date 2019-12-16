@@ -7,25 +7,47 @@ require __DIR__ . '/../autoload.php';
 if (isset($_POST['title'], $_FILES['image'])) {
     $title = filter_var(trim($_POST['title']), FILTER_SANITIZE_STRING);
     $image = $_FILES['image'];
+    $hashtagsExist = false;
+
     if (isset($_POST['hashtags'])) {
         $hashtags = filter_var(trim($_POST['hashtags']), FILTER_SANITIZE_STRING);
+        $hashtagsExist = true;
     }
     // die(var_dump($title, $image));
 
+    // checks size and type of image and creates errors if wrong and redirects back with error message
     if ($image['size'] > 2000000) {
         $_SESSION['errors'][] = "It's too big!";
+        redirect('/');
     }
-    if ($image['type'] !== 'image/png' && $image !== 'image/jpg' && $image !== 'image/jpeg') {
+    if ($image['type'] !== 'image/png' && $image['type'] !== 'image/jpg' && $image['type'] !== 'image/jpeg') {
         $_SESSION['errors'][] = "Thats not a valid file type!";
+        redirect('/');
     }
 
-    if ($_SESSION['errors']) {
-        die(var_dump($_SESSION));
-    }
+    // we grab the current users id to make the post theirs in the database
+    $userId = $_SESSION['user']['id'];
+
+    // the image path is set with its name and saved in variable for use when storing information in database
+    $picture = '../database/uploads/posts/' . $image['name'];
+
+    // image is moved to storage in file structure
     move_uploaded_file(
         $image['tmp_name'],
-        '../database/uploads/posts/' . $image['name']
+        $picture
     );
+
+    die(var_dump($picture, $userId, $title, $hashtags));
+
+    // information about post is saved in database, note keywords/hashtags is optional
+    //     $statement = $pdo->prepare('INSERT INTO posts (user_id, title, picture, keywords) VALUES (:user_id, :title, :picture, :keywords)');
+    //     $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
+    //     $statement->bindParam(':title', $title, PDO::PARAM_STR);
+    //     $statement->bindParam(':picture', $picture, PDO::PARAM_STR);
+    //     if ($hashtagsExist) {
+    //         $statement->bindParam(':keywords', $hashtags, PDO::PARAM_STR);
+    //     }
+    //     $statement->execute();
 }
 // die(var_dump($_FILES));
 redirect('/');
