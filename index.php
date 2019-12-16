@@ -18,7 +18,8 @@
         </form>
         <button class="btn btn-primary create-post-btn">Create post</button>
     </section>
-    <!-- can add script tag here for post js? -->
+    <section class="post__container"></section>
+    <script src="assets/scripts/posts.js"></script>
 <?php endif; ?>
 <?php showErrors(); ?>
 

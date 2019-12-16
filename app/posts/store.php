@@ -32,6 +32,7 @@ if (isset($_POST['title'], $_FILES['image'])) {
     // image name is set to a uuid before stored in uploads folder and database
     $uuidGen = explode('.', $image['name']);
     $uuidGen[0] = guidv4();
+    $picturePath = 'app/database/uploads/posts/' . $uuidGen[0] . '.' . $uuidGen[1];
 
     // the image path is set with its uuid name and saved in variable for use when storing information in database
     $imagePath = '../database/uploads/posts/' . $uuidGen[0] . '.' . $uuidGen[1];
@@ -46,7 +47,7 @@ if (isset($_POST['title'], $_FILES['image'])) {
     $statement = $pdo->prepare('INSERT INTO posts (user_id, title, picture, keywords) VALUES (:user_id, :title, :picture, :keywords)');
     $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $statement->bindParam(':title', $title, PDO::PARAM_STR);
-    $statement->bindParam(':picture', $imagePath, PDO::PARAM_STR);
+    $statement->bindParam(':picture', $picturePath, PDO::PARAM_STR);
     if ($hashtagsExist) {
         $statement->bindParam(':keywords', $hashtags, PDO::PARAM_STR);
     }
