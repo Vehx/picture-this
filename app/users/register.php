@@ -12,29 +12,38 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     $password = $_POST['password'];
     $passwordConfirm = $_POST['password-confirm'];
 
+    // saving entered info for sending back incase of errors
+    $_SESSION['registering']['name'] = $name;
+    $_SESSION['registering']['email'] = $email;
+    $_SESSION['registering']['password'] = $password;
+    $_SESSION['registering']['passwordConfirm'] = $passwordConfirm;
+
     // todo send information back so form doesnt need to be refilled
     // check if name field is empty
-    unset($_SESSION['error']);
     if ($name === '') {
         $_SESSION['errors'][] = "Error: Please enter your name.";
+        unset($_SESSION['registering']['name']);
         redirect('/register.php');
     }
 
     // check if email is valid and not empty
     if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $email === '') {
         $_SESSION['errors'][] = "Error: Please enter a valid email.";
+        unset($_SESSION['registering']['email']);
         redirect('/register.php');
     }
 
     // check that password is 4 characters or longer
     if (strlen($password) < 4 || strlen($passwordConfirm) < 4) {
         $_SESSION['errors'][] = "Error: Password needs to be 4 characters or longer.";
+        unset($_SESSION['registering']['password'], $_SESSION['registering']['passwordConfirm']);
         redirect('/register.php');
     }
 
     // check that both passwords are the same to confirm that the user knows what their password will be
     if (!$password === $passwordConfirm) {
         $_SESSION['errors'][] = "Error: Passwords don't match, please try again.";
+        unset($_SESSION['registering']['password'], $_SESSION['registering']['passwordConfirm']);
         redirect('/register.php');
     }
 
@@ -46,6 +55,7 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     $user = $statement->fetch(PDO::FETCH_ASSOC);
     if ($user['email'] === $email) {
         $_SESSION['errors'][] = "Error: Email is already registered.";
+        unset($_SESSION['registering']['email']);
         redirect('/register.php');
     }
 
@@ -84,6 +94,7 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
         $_SESSION['errors'][] = "Error: Password missmatch in database.";
         redirect('/register.php');
     }
+    unset($_SESSION['registering']);
 }
 
 redirect('/');
