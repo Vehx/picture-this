@@ -19,6 +19,10 @@
         <button class="btn btn-primary post__create-btn">Create post</button>
     </section>
     <section class="post__container"></section>
+    <script>
+        const userId = "<?php echo $_SESSION['user']['id']; ?>";
+    </script>
+    <script src="assets/scripts/likes.js"></script>
     <script src="assets/scripts/posts.js"></script>
 <?php endif; ?>
 <?php showErrors(); ?>

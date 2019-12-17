@@ -1,7 +1,18 @@
 "use strict";
 
+console.log("Posts loaded.");
+
 // in this file posts are fetched if any exsists and then made into post elements and placed in the dom post-container
 const url = "/app/posts/read.php";
+
+const creatPostBtn = document.querySelector(".post__create-btn");
+const postForm = document.querySelector(".post__form");
+
+creatPostBtn.addEventListener("click", () => {
+    console.log("Creating post :)");
+    creatPostBtn.classList.add("hidden");
+    postForm.classList.remove("hidden");
+});
 
 fetch(url)
     .then(response => response.json())
@@ -41,7 +52,7 @@ fetch(url)
                 like.className = "btn btn-secondary post__like-btn";
 
                 dislike.textContent = "Dislike";
-                dislike.className = "btn btn-secondary post__like-btn";
+                dislike.className = "btn btn-secondary post__dislike-btn";
 
                 comment.textContent = "Comment";
                 comment.className = "btn btn-secondary post__comment-btn";
@@ -56,7 +67,22 @@ fetch(url)
 
                 // post div is put in dom
                 postContainer.appendChild(newPost);
-                console.log(newPost);
+                // console.log(newPost);
+            });
+
+            // grabbing all like and dislike buttons for eventlistener adding
+            const likeButtons = document.querySelectorAll(".post__like-btn");
+            const dislikeButtons = document.querySelectorAll(
+                ".post__dislike-btn"
+            );
+
+            // adds like click eventlistener, functions are in likes.js
+            likeButtons.forEach(likeButton => {
+                likeButton.addEventListener("click", likePost);
+            });
+            // adds dislike click eventlistener
+            dislikeButtons.forEach(dislikeButton => {
+                dislikeButton.addEventListener("click", dislikePost);
             });
         } else {
             const div = document.createElement("div");
