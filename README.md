@@ -9,15 +9,19 @@ School project to make an instagram like page using html, css, js, php and sqlit
 
 ## Install
 
-1. [Clone](https://github.com/Vehx/picture-this) this in GitHub Desktop
-or `$ git clone https://github.com/Vehx/picture-this` in bash
-or `$ git clone git@github.com:Vehx/picture-this.git` in bash if you use ssh.
-2. Navigate to the map in your terminal.
+1. [Clone](https://github.com/Vehx/picture-this) this in GitHub Desktop <br>
+or `$ git clone https://github.com/Vehx/picture-this` in bash <br>
+or `$ git clone git@github.com:Vehx/picture-this.git` in bash if you use ssh. <br>
+2. Navigate to the folder in your terminal.
 3. Run `php -S localhost:5555` in your terminal.
 4. Visit `localhost:5555` in your browser.
 
 ## Features
-*
+* Account registering
+* Login
+* Logout
+* Create post
+* View posts (need to be logged in)
 
 ## Extra Features
 *
