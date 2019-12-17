@@ -3,7 +3,7 @@
 console.log("Posts loaded.");
 
 // in this file posts are fetched if any exsists and then made into post elements and placed in the dom post-container
-const url = "/app/posts/read.php";
+const postUrl = "/app/posts/read.php";
 
 const creatPostBtn = document.querySelector(".post__create-btn");
 const postForm = document.querySelector(".post__form");
@@ -14,7 +14,7 @@ creatPostBtn.addEventListener("click", () => {
     postForm.classList.remove("hidden");
 });
 
-fetch(url)
+fetch(postUrl)
     .then(response => response.json())
     .then(posts => {
         const postContainer = document.querySelector(".post__container");
