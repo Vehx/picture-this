@@ -56,6 +56,7 @@ fetch(postUrl)
 
                 comment.textContent = "Comment";
                 comment.className = "btn btn-secondary post__comment-btn";
+
                 // elements gets put inside post div
                 newPost.appendChild(h2);
                 newPost.appendChild(a);
@@ -78,11 +79,11 @@ fetch(postUrl)
 
             // adds like click eventlistener, functions are in likes.js
             likeButtons.forEach(likeButton => {
-                likeButton.addEventListener("click", likePost);
+                likeButton.addEventListener("click", handleLikes);
             });
             // adds dislike click eventlistener
             dislikeButtons.forEach(dislikeButton => {
-                dislikeButton.addEventListener("click", dislikePost);
+                dislikeButton.addEventListener("click", handleLikes);
             });
         } else {
             const div = document.createElement("div");

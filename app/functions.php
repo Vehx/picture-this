@@ -67,3 +67,68 @@ if (!function_exists('guidv4')) {
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 }
+
+if (!function_exists('getLike')) {
+    /**
+     * Checks if user has liked/disliked post previously.
+     *
+     * @return void
+     */
+    function getLike()
+    {
+        // todo add logic for function
+    }
+}
+
+if (!function_exists('removeLike')) {
+    /**
+     * Removes like from database. Send in database, postId and userId.
+     * Function will then query database with delete statement.
+     * 
+     * @param mixed $database
+     *
+     * @param string $postId
+     * @param string $userId
+     * 
+     * @return void
+     */
+    function removeLike($database, $postId, $userId)
+    {
+        $statement = $database->prepare('DELETE FROM likes WHERE post_id = :post_id AND user_id = :user_id');
+        $statement->bindParam(':post_id', $postId, PDO::PARAM_INT);
+        $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
+
+        $statement->execute();
+    }
+}
+
+if (!function_exists('setLike')) {
+    /**
+     * Takes in pdo statement, postid for targetted post, current users userid.
+     * liked and disliked can be string yes or null.
+     * likedType and dislikedType are pdo param variables,
+     * either PDO::PARAM_STR or PDO::PARAM_NULL depending on what like and disliked is set to.
+     * 
+     * @param mixed $statment
+     * 
+     * @param string $postId
+     * @param string $userId
+     * 
+     * @param mixed $liked
+     * @param mixed $likedType
+     * 
+     * @param mixed $disliked
+     * @param mixed $dislikedType
+     *
+     * @return void
+     */
+    function setLike($statement, $postId, $userId, $liked, $likedType, $disliked, $dislikedType)
+    {
+        $statement->bindParam(':post_id', $postId, PDO::PARAM_INT);
+        $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $statement->bindParam(':liked', $liked, $likedType);
+        $statement->bindParam(':disliked', $disliked, $dislikedType);
+
+        $statement->execute();
+    }
+}
