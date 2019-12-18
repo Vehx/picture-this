@@ -15,7 +15,8 @@ if (isset($_SESSION['user'])) {
     $statement->execute();
     $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    echo json_encode($posts);
+    $postsWithLikes = getLikes($posts);
+    echo json_encode($postsWithLikes);
 
     header('Content-Type: application/json');
 }

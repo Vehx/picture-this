@@ -68,15 +68,17 @@ if (!function_exists('guidv4')) {
     }
 }
 
-if (!function_exists('getLike')) {
+if (!function_exists('getLikes')) {
     /**
      * Checks if user has liked/disliked post previously.
      *
      * @return void
      */
-    function getLike()
+    function getLikes()
     {
         // todo add logic for function
+        // needs to work with both likes.phps check for user already liked post
+        // and posts/read.phps check to see how many likes a post has and if one of them is from current user
     }
 }
 
