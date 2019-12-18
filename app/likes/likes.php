@@ -27,6 +27,7 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
     if (isset($_POST['remove'])) {
         $action = 'remove';
     }
+    // sets post id from whichever type was sent in post, sanatized for that extra crispy security :)
     $postId = filter_var($_POST["$action"], FILTER_SANITIZE_STRING);
 
     if (getLike($postId, $userId)) {
@@ -41,12 +42,14 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
                 $likedType = PDO::PARAM_STR;
                 $disliked = null;
                 $dislikedType = PDO::PARAM_NULL;
+                $likesState = $postId . ' is liked.';
             }
             if ($action === 'dislike') {
                 $liked = null;
                 $likedType = PDO::PARAM_NULL;
                 $disliked = 'yes';
                 $dislikedType = PDO::PARAM_STR;
+                $likesState = $postId . ' is disliked.';
             }
 
             // send info to function that binds parameters to statement and executes it
@@ -55,6 +58,7 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
 
         if ($action === 'remove') {
             removeLike($pdo, $postId, $userId);
+            $likesState = $postId . ' is removed.';
         }
     } else {
 
@@ -68,12 +72,14 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
                 $likedType = PDO::PARAM_STR;
                 $disliked = null;
                 $dislikedType = PDO::PARAM_NULL;
+                $likesState = $postId . ' is liked.';
             }
             if ($action === 'dislike') {
                 $liked = null;
                 $likedType = PDO::PARAM_NULL;
                 $disliked = 'yes';
                 $dislikedType = PDO::PARAM_STR;
+                $likesState = $postId . ' is disliked.';
             }
 
             // send info to function that binds parameters to statement and executes it
@@ -82,6 +88,7 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
 
         if ($action === 'remove') {
             removeLike($pdo, $postId, $userId);
+            $likesState = $postId . ' is removed.';
         }
     }
 
