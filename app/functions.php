@@ -123,6 +123,36 @@ if (!function_exists('getLikes')) {
     }
 }
 
+if (!function_exists('getUserLikes')) {
+    /**
+     * Checks if user has liked/disliked post previously.
+     * Takes id of post to check, column to check liked/disliked and database.
+     * Returns result stored in column, yes or no in case of liked/disliked.
+     * 
+     * @param string $postId
+     * @param string $column
+     * @param mixed $database
+     *
+     * @return array
+     */
+    function getUserLikes($postId, $column, $database)
+    {
+        // todo add logic for function
+        // needs to work with both likes.phps check for user already liked post
+        // and posts/read.phps check to see how many likes a post has and if one of them is from current user
+        $userLikesOnPost = [];
+        $statement = $database->prepare("SELECT count(*) FROM likes WHERE post_id = :post_id AND user_id = :user_id AND :column = 'yes'");
+        $statement->bindParam(':post_id', $postId, PDO::PARAM_INT);
+        $statement->bindParam(':user_id', $_SESSION['user']['id'], PDO::PARAM_INT);
+        $statement->bindParam(':column', $column, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        $userLikesOnPost = $result['count(*)'];
+        return $userLikesOnPost;
+    }
+}
+
 if (!function_exists('removeLike')) {
     /**
      * Removes like from database. Send in database, postId and userId.
