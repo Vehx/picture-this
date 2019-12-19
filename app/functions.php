@@ -71,14 +71,55 @@ if (!function_exists('guidv4')) {
 if (!function_exists('getLikes')) {
     /**
      * Checks if user has liked/disliked post previously.
+     * @param array $posts
+     * @param mixed $database
      *
-     * @return void
+     * @return array
      */
-    function getLikes()
+    function getLikes($posts, $database)
     {
         // todo add logic for function
         // needs to work with both likes.phps check for user already liked post
         // and posts/read.phps check to see how many likes a post has and if one of them is from current user
+        $postsWithLikes = [];
+        foreach ($posts as $post) {
+            $statement = $database->prepare("SELECT count(*) FROM likes WHERE post_id = :post_id AND liked = 'yes'");
+            $statement->bindParam(':post_id', $post['id'], PDO::PARAM_INT);
+            $statement->execute();
+            $postLikes = intval($statement->fetch(PDO::FETCH_ASSOC));
+
+            $statement = $database->prepare("SELECT count(*) FROM likes WHERE post_id = :post_id AND disliked = 'yes'");
+            $statement->bindParam(':post_id', $post['id'], PDO::PARAM_INT);
+            $statement->execute();
+            $postDislikes = intval($statement->fetch(PDO::FETCH_ASSOC));
+
+            $post['likes'] = $postLikes - $postDislikes;
+            $post['liked'] = 'no';
+            $post['disliked'] = 'no';
+
+            $statement = $database->prepare("SELECT count(*) FROM likes WHERE post_id = :post_id AND user_id = :user_id AND liked = 'yes'");
+            $statement->bindParam(':post_id', $post['id'], PDO::PARAM_INT);
+            $statement->bindParam(':user_id', $_SESSION['user']['id'], PDO::PARAM_INT);
+            $statement->execute();
+            $postLiked = $statement->fetch(PDO::FETCH_ASSOC);
+            // $post['liked'] = $statement->fetch(PDO::FETCH_ASSOC);
+
+            $statement = $database->prepare("SELECT count(*) FROM likes WHERE post_id = :post_id AND user_id = :user_id AND disliked = 'yes'");
+            $statement->bindParam(':post_id', $post['id'], PDO::PARAM_INT);
+            $statement->bindParam(':user_id', $_SESSION['user']['id'], PDO::PARAM_INT);
+            $statement->execute();
+            $postDisliked = $statement->fetch(PDO::FETCH_ASSOC);
+            // $post['disliked'] = $statement->fetch();
+
+            if ($postLiked['count(*)'] === '1') {
+                $post['liked'] = 'yes';
+            }
+            if ($postDisliked['count(*)'] === '1') {
+                $post['disliked'] = 'yes';
+            }
+            $postsWithLikes[] = $post;
+        }
+        return $postsWithLikes;
     }
 }
 

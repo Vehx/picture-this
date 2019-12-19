@@ -30,7 +30,7 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
     // sets post id from whichever type was sent in post, sanatized for that extra crispy security :)
     $postId = filter_var($_POST["$action"], FILTER_SANITIZE_STRING);
 
-    if (getLikes($postId, $userId)) {
+    if (getUserLikes($postId, $userId)) {
 
         if ($action === 'like' || $action === 'dislike') {
             // prepares statement for liking/disliking

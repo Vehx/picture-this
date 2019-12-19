@@ -32,6 +32,7 @@ fetch(postUrl)
                 let dislike = document.createElement("button");
                 let comment = document.createElement("button");
 
+                // todo make function postElement that makes elements and sets textContent and className
                 // elements are populated with data and classes
                 newPost.className = "post";
                 newPost.setAttribute("data-id", post.id);
@@ -56,6 +57,16 @@ fetch(postUrl)
 
                 comment.textContent = "Comment";
                 comment.className = "btn btn-secondary post__comment-btn";
+
+                // todo make into funcion highlightButton
+                if (post.liked === "yes") {
+                    like.classList.add("btn-primary");
+                    like.classList.remove("btn-secondary");
+                }
+                if (post.disliked === "yes") {
+                    dislike.classList.add("btn-primary");
+                    dislike.classList.remove("btn-secondary");
+                }
 
                 // elements gets put inside post div
                 newPost.appendChild(h2);
