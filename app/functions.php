@@ -67,3 +67,124 @@ if (!function_exists('guidv4')) {
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 }
+
+if (!function_exists('getLikes')) {
+    /**
+     * Checks if user has liked/disliked post previously.
+     * @param array $posts
+     * @param string $userId
+     * @param mixed $database
+     *
+     * @return array
+     */
+    function getLikes($posts, $userId, $database)
+    {
+        // todo add logic for function
+        // needs to work with both likes.phps check for user already liked post
+        // and posts/read.phps check to see how many likes a post has and if one of them is from current user
+        $postsWithLikes = [];
+        foreach ($posts as $post) {
+            $statement = $database->prepare("SELECT count(*) FROM likes WHERE post_id = :post_id AND liked = 'yes'");
+            $statement->bindParam(':post_id', $post['id'], PDO::PARAM_INT);
+            $statement->execute();
+            $postLikes = intval($statement->fetch(PDO::FETCH_ASSOC));
+
+            $statement = $database->prepare("SELECT count(*) FROM likes WHERE post_id = :post_id AND disliked = 'yes'");
+            $statement->bindParam(':post_id', $post['id'], PDO::PARAM_INT);
+            $statement->execute();
+            $postDislikes = intval($statement->fetch(PDO::FETCH_ASSOC));
+
+            $post['likes'] = $postLikes - $postDislikes;
+            $post['liked'] = getUserLikes($database, $post['id'], $userId, 'liked');
+            $post['disliked'] = getUserLikes($database, $post['id'], $userId, 'disliked');
+            $postsWithLikes[] = $post;
+        }
+        return $postsWithLikes;
+    }
+}
+
+if (!function_exists('getUserLikes')) {
+    /**
+     * Checks if user has liked/disliked post previously.
+     * Takes id of post and user to check, column to check liked/disliked and database.
+     * Returns result stored in column, yes or no in case of liked/disliked.
+     * 
+     * @param string $postId
+     * @param string $userId
+     * @param string $column
+     * @param mixed $database
+     *
+     * @return string
+     */
+    function getUserLikes($database, $postId, $userId, $column)
+    {
+        $query = "SELECT count(*) FROM likes WHERE post_id = :post_id AND user_id = :user_id AND ";
+        if ($column === 'liked') {
+            $query = $query . "liked = 'yes'";
+        }
+        if ($column === 'disliked') {
+            $query = $query . "disliked = 'yes'";
+        }
+        $statement = $database->prepare($query);
+        $statement->bindParam(':post_id', $postId, PDO::PARAM_INT);
+        $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        $userLikesOnPost = $result['count(*)'];
+        return $userLikesOnPost;
+    }
+}
+
+if (!function_exists('removeLike')) {
+    /**
+     * Removes like from database. Send in database, postId and userId.
+     * Function will then query database with delete statement.
+     * 
+     * @param mixed $database
+     *
+     * @param string $postId
+     * @param string $userId
+     * 
+     * @return void
+     */
+    function removeLike($database, $postId, $userId)
+    {
+        $statement = $database->prepare('DELETE FROM likes WHERE post_id = :post_id AND user_id = :user_id');
+        $statement->bindParam(':post_id', $postId, PDO::PARAM_INT);
+        $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
+
+        $statement->execute();
+    }
+}
+
+if (!function_exists('setLike')) {
+    /**
+     * Takes in pdo statement, postid for targetted post, current users userid.
+     * liked and disliked can be string yes or null.
+     * likedType and dislikedType are pdo param variables,
+     * either PDO::PARAM_STR or PDO::PARAM_NULL depending on what like and disliked is set to.
+     * 
+     * @param mixed $statment
+     * 
+     * @param string $postId
+     * @param string $userId
+     * 
+     * @param mixed $liked
+     * @param mixed $likedType
+     * 
+     * @param mixed $disliked
+     * @param mixed $dislikedType
+     *
+     * @return void
+     */
+    function setLike($statement, $postId, $userId, $liked, $likedType, $disliked, $dislikedType)
+    {
+        $statement->bindParam(':post_id', $postId, PDO::PARAM_INT);
+        $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $statement->bindParam(':liked', $liked, $likedType);
+        $statement->bindParam(':disliked', $disliked, $dislikedType);
+
+        $statement->execute();
+    }
+}

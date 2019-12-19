@@ -1,9 +1,20 @@
 "use strict";
 
-// in this file posts are fetched if any exsists and then made into post elements and placed in the dom post-container
-const url = "/app/posts/read.php";
+console.log("Posts loaded.");
 
-fetch(url)
+// in this file posts are fetched if any exsists and then made into post elements and placed in the dom post-container
+const postUrl = "/app/posts/read.php";
+
+const creatPostBtn = document.querySelector(".post__create-btn");
+const postForm = document.querySelector(".post__form");
+
+creatPostBtn.addEventListener("click", () => {
+    console.log("Creating post :)");
+    creatPostBtn.classList.add("hidden");
+    postForm.classList.remove("hidden");
+});
+
+fetch(postUrl)
     .then(response => response.json())
     .then(posts => {
         const postContainer = document.querySelector(".post__container");
@@ -21,6 +32,7 @@ fetch(url)
                 let dislike = document.createElement("button");
                 let comment = document.createElement("button");
 
+                // todo make function postElement that makes elements and sets textContent and className
                 // elements are populated with data and classes
                 newPost.className = "post";
                 newPost.setAttribute("data-id", post.id);
@@ -41,10 +53,21 @@ fetch(url)
                 like.className = "btn btn-secondary post__like-btn";
 
                 dislike.textContent = "Dislike";
-                dislike.className = "btn btn-secondary post__like-btn";
+                dislike.className = "btn btn-secondary post__dislike-btn";
 
                 comment.textContent = "Comment";
                 comment.className = "btn btn-secondary post__comment-btn";
+
+                // todo make into funcion highlightButton
+                if (post.liked === "1") {
+                    like.classList.add("btn-primary");
+                    like.classList.remove("btn-secondary");
+                }
+                if (post.disliked === "1") {
+                    dislike.classList.add("btn-primary");
+                    dislike.classList.remove("btn-secondary");
+                }
+
                 // elements gets put inside post div
                 newPost.appendChild(h2);
                 newPost.appendChild(a);
@@ -56,7 +79,22 @@ fetch(url)
 
                 // post div is put in dom
                 postContainer.appendChild(newPost);
-                console.log(newPost);
+                // console.log(newPost);
+            });
+
+            // grabbing all like and dislike buttons for eventlistener adding
+            const likeButtons = document.querySelectorAll(".post__like-btn");
+            const dislikeButtons = document.querySelectorAll(
+                ".post__dislike-btn"
+            );
+
+            // adds like click eventlistener, functions are in likes.js
+            likeButtons.forEach(likeButton => {
+                likeButton.addEventListener("click", handleLikes);
+            });
+            // adds dislike click eventlistener
+            dislikeButtons.forEach(dislikeButton => {
+                dislikeButton.addEventListener("click", handleLikes);
             });
         } else {
             const div = document.createElement("div");
