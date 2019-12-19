@@ -17,6 +17,7 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
     $action = '';
     $likesState = '';
     $userId = $_SESSION['user']['id'];
+    $likeExists = filter_var($_POST['exists'], FILTER_SANITIZE_STRING);
 
     if (isset($_POST['like'])) {
         $action = 'like';
@@ -30,8 +31,7 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
     // sets post id from whichever type was sent in post, sanatized for that extra crispy security :)
     $postId = filter_var($_POST["$action"], FILTER_SANITIZE_STRING);
 
-    if (getUserLikes($postId, $userId)) {
-
+    if ($likeExists === 'true') {
         if ($action === 'like' || $action === 'dislike') {
             // prepares statement for liking/disliking
             $statement = $pdo->prepare('UPDATE likes SET post_id = :post_id, user_id = :user_id, liked = :liked, disliked = :disliked');

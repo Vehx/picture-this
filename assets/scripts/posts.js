@@ -59,11 +59,11 @@ fetch(postUrl)
                 comment.className = "btn btn-secondary post__comment-btn";
 
                 // todo make into funcion highlightButton
-                if (post.liked === "yes") {
+                if (post.liked === "1") {
                     like.classList.add("btn-primary");
                     like.classList.remove("btn-secondary");
                 }
-                if (post.disliked === "yes") {
+                if (post.disliked === "1") {
                     dislike.classList.add("btn-primary");
                     dislike.classList.remove("btn-secondary");
                 }

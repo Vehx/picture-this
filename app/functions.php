@@ -72,11 +72,12 @@ if (!function_exists('getLikes')) {
     /**
      * Checks if user has liked/disliked post previously.
      * @param array $posts
+     * @param string $userId
      * @param mixed $database
      *
      * @return array
      */
-    function getLikes($posts, $database)
+    function getLikes($posts, $userId, $database)
     {
         // todo add logic for function
         // needs to work with both likes.phps check for user already liked post
@@ -94,29 +95,8 @@ if (!function_exists('getLikes')) {
             $postDislikes = intval($statement->fetch(PDO::FETCH_ASSOC));
 
             $post['likes'] = $postLikes - $postDislikes;
-            $post['liked'] = 'no';
-            $post['disliked'] = 'no';
-
-            $statement = $database->prepare("SELECT count(*) FROM likes WHERE post_id = :post_id AND user_id = :user_id AND liked = 'yes'");
-            $statement->bindParam(':post_id', $post['id'], PDO::PARAM_INT);
-            $statement->bindParam(':user_id', $_SESSION['user']['id'], PDO::PARAM_INT);
-            $statement->execute();
-            $postLiked = $statement->fetch(PDO::FETCH_ASSOC);
-            // $post['liked'] = $statement->fetch(PDO::FETCH_ASSOC);
-
-            $statement = $database->prepare("SELECT count(*) FROM likes WHERE post_id = :post_id AND user_id = :user_id AND disliked = 'yes'");
-            $statement->bindParam(':post_id', $post['id'], PDO::PARAM_INT);
-            $statement->bindParam(':user_id', $_SESSION['user']['id'], PDO::PARAM_INT);
-            $statement->execute();
-            $postDisliked = $statement->fetch(PDO::FETCH_ASSOC);
-            // $post['disliked'] = $statement->fetch();
-
-            if ($postLiked['count(*)'] === '1') {
-                $post['liked'] = 'yes';
-            }
-            if ($postDisliked['count(*)'] === '1') {
-                $post['disliked'] = 'yes';
-            }
+            $post['liked'] = getUserLikes($database, $post['id'], $userId, 'liked');
+            $post['disliked'] = getUserLikes($database, $post['id'], $userId, 'disliked');
             $postsWithLikes[] = $post;
         }
         return $postsWithLikes;
@@ -126,25 +106,28 @@ if (!function_exists('getLikes')) {
 if (!function_exists('getUserLikes')) {
     /**
      * Checks if user has liked/disliked post previously.
-     * Takes id of post to check, column to check liked/disliked and database.
+     * Takes id of post and user to check, column to check liked/disliked and database.
      * Returns result stored in column, yes or no in case of liked/disliked.
      * 
      * @param string $postId
+     * @param string $userId
      * @param string $column
      * @param mixed $database
      *
-     * @return array
+     * @return string
      */
-    function getUserLikes($postId, $column, $database)
+    function getUserLikes($database, $postId, $userId, $column)
     {
-        // todo add logic for function
-        // needs to work with both likes.phps check for user already liked post
-        // and posts/read.phps check to see how many likes a post has and if one of them is from current user
-        $userLikesOnPost = [];
-        $statement = $database->prepare("SELECT count(*) FROM likes WHERE post_id = :post_id AND user_id = :user_id AND :column = 'yes'");
+        $query = "SELECT count(*) FROM likes WHERE post_id = :post_id AND user_id = :user_id AND ";
+        if ($column === 'liked') {
+            $query = $query . "liked = 'yes'";
+        }
+        if ($column === 'disliked') {
+            $query = $query . "disliked = 'yes'";
+        }
+        $statement = $database->prepare($query);
         $statement->bindParam(':post_id', $postId, PDO::PARAM_INT);
-        $statement->bindParam(':user_id', $_SESSION['user']['id'], PDO::PARAM_INT);
-        $statement->bindParam(':column', $column, PDO::PARAM_STR);
+        $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
