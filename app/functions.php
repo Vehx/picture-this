@@ -188,3 +188,25 @@ if (!function_exists('setLike')) {
         $statement->execute();
     }
 }
+
+if (!function_exists('getProfile')) {
+    /**
+     * Gets profile information from the database about the user sent in.
+     * 
+     * @param mixed $database
+     * @param string $id
+     *
+     * @return string
+     */
+    function getProfile($database, $id)
+    {
+        $query = 'SELECT * FROM users WHERE id = :id';
+        $statement = $database->prepare($query);
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $statement->execute();
+        $profile = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $profile;
+    }
+}

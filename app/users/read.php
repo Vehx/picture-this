@@ -9,19 +9,11 @@ if (!isset($_SESSION['user'])) {
 
 if (isset($_GET['uid'])) {
     $ownProfile = false;
-    $statement = $pdo->prepare('SELECT * FROM users WHERE id = :id');
-    $statement->bindParam(':id', $_GET['uid'], PDO::PARAM_INT);
-
-    $statement->execute();
+    $profile = getProfile($pdo, $_GET['uid']);
 } else {
     $ownProfile = true;
-    $statement = $pdo->prepare('SELECT * FROM users WHERE id = :id');
-    $statement->bindParam(':id', $_SESSION['user']['id'], PDO::PARAM_INT);
-
-    $statement->execute();
+    $profile = getProfile($pdo, $_SESSION['user']['id']);
 }
-
-$profile = $statement->fetch(PDO::FETCH_ASSOC);
 
 $_SESSION['profile']['name'] = $profile['name'];
 $_SESSION['profile']['avatar'] = $profile['avatar'];
@@ -29,3 +21,5 @@ $_SESSION['profile']['biography'] = $profile['biography'];
 if ($ownProfile) {
     $_SESSION['profile']['email'] = $profile['email'];
 }
+
+unset($profile);
