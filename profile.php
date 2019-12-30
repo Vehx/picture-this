@@ -24,7 +24,11 @@
         echo $_SESSION['profile']['biography'];
         ?>
     </p>
-
+    <?php
+    if ($_SESSION['user']['id'] === $_SESSION['profile']['id']) :
+    ?>
+        <button class="btn btn-primary">Edit</button>
+    <?php endif; ?>
     <?php showErrors(); ?>
 </article>
 
