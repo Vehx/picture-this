@@ -25,16 +25,16 @@
     ?>
         <form action="app/users/update.php" method="POST" enctype="multipart/form-data" class="profile__form ">
             <label class="profile__name-label" for="name">Name :</label>
-            <input class="profile__name-input" type="text" id="name" name="name">
+            <input class="profile__name-input" type="text" id="name" name="name" value="<?php echo $name; ?>">
             <br>
             <label class="profile__avatar-label" for="avatar">Avatar :</label>
             <input class="profile__avatar-input" type="file" id="avatar" name="avatar" accept="jpeg, jpg, png">
             <br>
             <label class="profile__biography-label" for="biography">Biography :</label>
-            <input class="profile__biography-input" type="text" id="biography" name="biography">
+            <input class="profile__biography-input" type="text" id="biography" name="biography" value="<?php echo $biography; ?>">
             <br>
             <label class="profile__email-label" for="email">Email :</label>
-            <input class="profile__email-input" type="text" id="email" name="email">
+            <input class="profile__email-input" type="text" id="email" name="email" value="<?php echo $email; ?>">
             <br>
             <button type="submit" class="btn btn-primary profile__submit-btn">Save</button>
         </form>
