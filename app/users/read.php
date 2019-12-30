@@ -9,8 +9,10 @@ if (!isset($_SESSION['user'])) {
 
 if (isset($_GET['uid'])) {
     $profile = getProfile($pdo, $_GET['uid']);
+    $_SESSION['profile']['id'] = $profile['id'];
 } else {
     $profile = getProfile($pdo, $_SESSION['user']['id']);
+    $_SESSION['profile']['id'] = $profile['id'];
     $_SESSION['profile']['email'] = $profile['email'];
 }
 
