@@ -40,7 +40,7 @@ fetch(postUrl)
                 h2.textContent = post.title;
                 h2.className = "post__title";
 
-                a.href = post.user_id;
+                a.href = "/profile.php?uid=" + post.user_id;
                 a.className = "post__profile-id";
 
                 img.src = post.picture;
