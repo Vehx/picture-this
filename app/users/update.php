@@ -8,7 +8,21 @@ if (!isset($_SESSION['user'])) {
     redirect('/');
 }
 
+if (isset($_POST)) {
+    if (isset($_POST['name'])) {
+    }
 
+    if (isset($_POST['avatar'])) {
+    }
+
+    if (isset($_POST['biography'])) {
+    }
+
+    if (isset($_POST['email'])) {
+    }
+
+    redirect('/profile.php');
+}
 // if ( name != user name) {
     // database write new name 
 // }
