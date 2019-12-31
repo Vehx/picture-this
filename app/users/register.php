@@ -41,7 +41,7 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     }
 
     // check that both passwords are the same to confirm that the user knows what their password will be
-    if (!$password === $passwordConfirm) {
+    if (!($password === $passwordConfirm)) {
         $_SESSION['errors'][] = "Error: Passwords don't match, please try again.";
         unset($_SESSION['registering']['password'], $_SESSION['registering']['password-confirm']);
         redirect('/register.php');
