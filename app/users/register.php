@@ -16,7 +16,7 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     $_SESSION['registering']['name'] = $name;
     $_SESSION['registering']['email'] = $email;
     $_SESSION['registering']['password'] = $password;
-    $_SESSION['registering']['passwordConfirm'] = $passwordConfirm;
+    $_SESSION['registering']['password-confirm'] = $passwordConfirm;
 
     // todo send information back so form doesnt need to be refilled
     // check if name field is empty
@@ -36,14 +36,14 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     // check that password is 4 characters or longer
     if (strlen($password) < 4 || strlen($passwordConfirm) < 4) {
         $_SESSION['errors'][] = "Error: Password needs to be 4 characters or longer.";
-        unset($_SESSION['registering']['password'], $_SESSION['registering']['passwordConfirm']);
+        unset($_SESSION['registering']['password'], $_SESSION['registering']['password-confirm']);
         redirect('/register.php');
     }
 
     // check that both passwords are the same to confirm that the user knows what their password will be
     if (!$password === $passwordConfirm) {
         $_SESSION['errors'][] = "Error: Passwords don't match, please try again.";
-        unset($_SESSION['registering']['password'], $_SESSION['registering']['passwordConfirm']);
+        unset($_SESSION['registering']['password'], $_SESSION['registering']['password-confirm']);
         redirect('/register.php');
     }
 
