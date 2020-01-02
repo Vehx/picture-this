@@ -232,3 +232,23 @@ if (!function_exists('updateProfile')) {
         $statement->execute();
     }
 }
+
+if (!function_exists('checkEmail')) {
+    /**
+     * Gets user by email and returns it, can be used to check if email is already in use.
+     * 
+     * @param mixed $database
+     * @param string $email
+     *
+     * @return string
+     */
+    function checkEmail($database, $email)
+    {
+        $query = 'SELECT * FROM users WHERE email = :email';
+        $statement = $database->prepare($query);
+        $statement->bindParam(':email', $email, PDO::PARAM_STR);
+
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+}

@@ -49,10 +49,7 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
 
     // checks if email already is registerd in database
     // todo make this into a function
-    $statement = $pdo->prepare('SELECT * FROM users WHERE email = :email');
-    $statement->bindParam(':email', $email, PDO::PARAM_STR);
-    $statement->execute();
-    $user = $statement->fetch(PDO::FETCH_ASSOC);
+    $user = checkEmail($pdo, $email);
     if ($user['email'] === $email) {
         $_SESSION['errors'][] = "Error: Email is already registered.";
         unset($_SESSION['registering']['email']);
@@ -94,6 +91,7 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
         $_SESSION['errors'][] = "Error: Password missmatch in database.";
         redirect('/register.php');
     }
+    // deleting saved information as everything passed without errors
     unset($_SESSION['registering']);
 }
 

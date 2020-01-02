@@ -20,9 +20,6 @@ if (isset($_POST)) {
     $newBiography = '';
     $newEmail = '';
 
-    $changes = [];
-    $query = '';
-
     if (isset($_POST['name'])) {
         $newName = filter_var(trim($_POST['name']), FILTER_SANITIZE_STRING);
         if (!($newName === $oldName) || $newName != '') {
@@ -41,8 +38,6 @@ if (isset($_POST)) {
     }
 
     if (isset($_POST['biography'])) {
-        $hasChanged = true;
-        $newBiography = '';
         $newBiography = filter_var(trim($_POST['biography']), FILTER_SANITIZE_STRING);
         if (!($newBiography === $oldBiography) || $newBiography != '') {
             $hasChanged = true;
@@ -51,12 +46,12 @@ if (isset($_POST)) {
     }
 
     if (isset($_POST['email'])) {
-        $hasChanged = true;
-        $newEmail = '';
+        $newEmail = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+        $emailCheckUser = checkEmail($pdo, $newEmail);
         // check database for email, select * from users where email = $newEmail
         // if it returns false, email doesn't exist and we continue with changing email
         // same thing for name maybe?
-        if (!($newEmail === $oldEmail) || $newEmail != '') {
+        if (!($newEmail === $oldEmail) && $newEmail != '' && !isset($emailCheckUser['email'])) {
             $hasChanged = true;
             updateProfile($pdo, $id, 'email', $newEmail);
         }
