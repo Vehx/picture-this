@@ -210,3 +210,25 @@ if (!function_exists('getProfile')) {
         return $profile;
     }
 }
+
+if (!function_exists('updateProfile')) {
+    /**
+     * Updates profile information in the database with the user input sent in.
+     * 
+     * @param mixed $database
+     * @param string $id
+     * @param string $column
+     * @param string $value
+     *
+     * @return void
+     */
+    function updateProfile($database, $id, $column, $value)
+    {
+        $query = "UPDATE users SET $column = :value WHERE id = :id";
+        $statement = $database->prepare($query);
+        $statement->bindParam(':value', $value, PDO::PARAM_STR);
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $statement->execute();
+    }
+}

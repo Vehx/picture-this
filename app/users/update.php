@@ -10,6 +10,7 @@ if (!isset($_SESSION['user'])) {
 
 if (isset($_POST)) {
     $hasChanged = false;
+    $id = $_SESSION['user']['id'];
     $oldName = $_SESSION['user']['name'];
     $oldAvatar = $_SESSION['user']['avatar'];
     $oldBiography = $_SESSION['user']['biography'];
@@ -26,18 +27,27 @@ if (isset($_POST)) {
         $newName = filter_var(trim($_POST['name']), FILTER_SANITIZE_STRING);
         if (!($newName === $oldName) || $newName != '') {
             $hasChanged = true;
-            $changes[] = "name = $newName";
+            updateProfile($pdo, $id, 'name', $newName);
         }
     }
 
     if (isset($_POST['avatar'])) {
-        $hasChanged = true;
-        $newAvatar = '';
+        if ($_POST['avatar'] != '') {
+            $hasChanged = true;
+            $newAvatar = '';
+            guidv4();
+            updateProfile($pdo, $id, 'avatar', $newAvatar);
+        }
     }
 
     if (isset($_POST['biography'])) {
         $hasChanged = true;
         $newBiography = '';
+        $newBiography = filter_var(trim($_POST['biography']), FILTER_SANITIZE_STRING);
+        if (!($newBiography === $oldBiography) || $newBiography != '') {
+            $hasChanged = true;
+            updateProfile($pdo, $id, 'biography', $newBiography);
+        }
     }
 
     if (isset($_POST['email'])) {
@@ -46,10 +56,14 @@ if (isset($_POST)) {
         // check database for email, select * from users where email = $newEmail
         // if it returns false, email doesn't exist and we continue with changing email
         // same thing for name maybe?
+        if (!($newEmail === $oldEmail) || $newEmail != '') {
+            $hasChanged = true;
+            updateProfile($pdo, $id, 'email', $newEmail);
+        }
     }
 
     if ($hasChanged) {
-        // database change
+        // not database change, maybe msg
     }
 
     redirect('/profile.php');
