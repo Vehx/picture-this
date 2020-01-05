@@ -7,7 +7,7 @@ if (!isset($_SESSION['user'])) {
     redirect('/');
 }
 
-if (isset($_GET['uid'])) {
+if (isset($_GET['uid']) && $_GET['uid'] != $_SESSION['user']['id']) {
     $profile = getProfile($pdo, $_GET['uid']);
     $_SESSION['profile']['id'] = $profile['id'];
 } else {

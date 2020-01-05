@@ -34,14 +34,17 @@ if (isset($_POST)) {
     }
 
     // checks if avatar is sent
-    if (isset($_POST['avatar'])) {
+    if (isset($_FILES['avatar'])) {
+        $_SESSION['errors'][] = "hi from image isset";
+
         // checks that it's not an empty string
-        if ($_POST['avatar'] != '') {
+        if ($_FILES['avatar'] != '') {
             // checks that it's ok, not too big and of the right type
-            if (isImageOk($_POST['avatar']['size'], $_POST['avatar']['type'])) {
+            if (isImageOk($_FILES['avatar']['size'], $_FILES['avatar']['type'])) {
                 // prepares image, gives it a uuid and moves it to the uploads/avatars folder
-                $newAvatar = prepareImage($_POST['avatar']['name'], $_POST['avatar']['tmp_name'], true);
+                $newAvatar = prepareImage($_FILES['avatar']['name'], $_FILES['avatar']['tmp_name'], true);
                 // sends changes to be made in database
+                $_SESSION['errors'][] = "hi from image";
                 $hasChanged = true;
                 updateDatabase($pdo, $databaseTable, $id, 'avatar', $newAvatar);
             } else {

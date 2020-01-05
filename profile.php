@@ -23,7 +23,7 @@
     <?php
     if ($_SESSION['user']['id'] === $_SESSION['profile']['id']) :
     ?>
-        <form action="app/users/update.php" method="POST" enctype="multipart/form-data" class="profile__form ">
+        <form action="app/users/update.php" method="POST" enctype="multipart/form-data" class="profile__form hidden">
             <label class="profile__name-label" for="name">Name :</label>
             <input class="profile__name-input" type="text" id="name" name="name" value="<?php echo $name; ?>">
             <br>
@@ -39,7 +39,7 @@
             <button type="submit" class="btn btn-primary profile__submit-btn">Save</button>
         </form>
 
-        <button class="btn btn-primary">Edit</button>
+        <button class="btn btn-primary profile__edit-btn">Edit</button>
 
         <script src="assets/scripts/profile.js"></script>
     <?php endif; ?>
