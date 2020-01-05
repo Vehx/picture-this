@@ -252,3 +252,68 @@ if (!function_exists('checkEmail')) {
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 }
+
+if (!function_exists('prepareImage')) {
+    /**
+     * Uploads image and gives it a uuid name.
+     * Returns path to set in database.
+     * 
+     * @param string $imageName
+     * @param string $imageTmpName
+     * @param bool $isAvatar
+     *
+     * @return string
+     */
+    function prepareImage(string $imageName, string $imageTmpName, bool $isAvatar = false)
+    {
+        $type = 'posts';
+        if ($isAvatar) {
+            $type = 'avatars';
+        }
+
+        // image name is set to a uuid before stored in uploads folder and database
+        $uuidName = explode('.', $imageName);
+        $uuidName[0] = guidv4();
+        $imageRealPath = "app/database/uploads/$type/" . $uuidName[0] . '.' . $uuidName[1];
+
+        // the image path is set with its uuid name and saved in variable for use when storing information in database
+        $imageRelativePath = "../database/uploads/$type/" . $uuidName[0] . '.' . $uuidName[1];
+
+        // image is moved to storage in file structure
+        move_uploaded_file(
+            $imageTmpName,
+            $imageRelativePath
+        );
+        return $imageRealPath;
+    }
+}
+
+if (!function_exists('isImageOk')) {
+    /**
+     * Checks if image size and image type is ok.
+     * Returns false if either is not after setting an error in $_SESSION['errors'].
+     * Returns true if image is ok.
+     * 
+     * @param int $imageSize
+     * @param string $imageType
+     *
+     * @return bool
+     */
+    function isImageOk(int $imageSize, string $imageType)
+    {
+
+        // checks size and type of image and creates errors if wrong and redirects back with error message
+        if ($imageSize > 2000000) {
+            $_SESSION['errors'][] = "It's too big!";
+            // redirect('/');
+            return false;
+        }
+        if ($imageType !== 'image/png' && $imageType !== 'image/jpg' && $imageType !== 'image/jpeg') {
+            $_SESSION['errors'][] = "Thats not a valid file type!";
+            // redirect('/');
+            return false;
+        }
+
+        return true;
+    }
+}
