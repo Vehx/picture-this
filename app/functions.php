@@ -211,20 +211,20 @@ if (!function_exists('getProfile')) {
     }
 }
 
-if (!function_exists('updateProfile')) {
+if (!function_exists('updateDatabase')) {
     /**
      * Updates profile information in the database with the user input sent in.
      * 
-     * @param mixed $database
+     * @param object $database
      * @param string $id
      * @param string $column
      * @param string $value
      *
      * @return void
      */
-    function updateProfile($database, $id, $column, $value)
+    function updateDatabase(object $database, string $table, string $id, string $column, string $value)
     {
-        $query = "UPDATE users SET $column = :value WHERE id = :id";
+        $query = "UPDATE $table SET $column = :value WHERE id = :id";
         $statement = $database->prepare($query);
         $statement->bindParam(':value', $value, PDO::PARAM_STR);
         $statement->bindParam(':id', $id, PDO::PARAM_INT);
@@ -237,12 +237,12 @@ if (!function_exists('checkEmail')) {
     /**
      * Gets user by email and returns it, can be used to check if email is already in use.
      * 
-     * @param mixed $database
+     * @param object $database
      * @param string $email
      *
      * @return string
      */
-    function checkEmail($database, $email)
+    function checkEmail(object $database, string $email)
     {
         $query = 'SELECT * FROM users WHERE email = :email';
         $statement = $database->prepare($query);
