@@ -38,6 +38,7 @@
             <br>
             <button type="submit" class="btn btn-primary profile__submit-btn">Save</button>
         </form>
+        <button class="btn btn-primary profile__cancel-btn hidden">Cancel</button>
 
         <button class="btn btn-primary profile__edit-btn">Edit</button>
 
