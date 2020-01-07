@@ -30,8 +30,7 @@
 
         <div class="form-group">
             <label for="password">Password</label>
-            <input class="form-control" type="password" name="password" minlength="4" maxlength="255" value="
-            <?php
+            <input class="form-control" type="password" name="password" minlength="4" maxlength="255" value="<?php
             if (isset($_SESSION['registering']['password'])) {
                 echo $_SESSION['registering']['password'];
                 unset($_SESSION['registering']['password']);
@@ -41,8 +40,7 @@
         </div><!-- /form-group -->
         <div class="form-group">
             <label for="password-confirm">Confirm Password</label>
-            <input class="form-control" type="password" name="password-confirm" minlength="4" maxlength="255" value="
-            <?php
+            <input class="form-control" type="password" name="password-confirm" minlength="4" maxlength="255" value="<?php
             if (isset($_SESSION['registering']['password-confirm'])) {
                 echo $_SESSION['registering']['password-confirm'];
                 unset($_SESSION['registering']['password-confirm']);
