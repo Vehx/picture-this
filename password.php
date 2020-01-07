@@ -9,12 +9,12 @@
     </div><!-- /form-group -->
 
     <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">New password</label>
         <input class="form-control" type="password" name="new-password" minlength="4" maxlength="255">
         <small class="form-text text-muted">Please enter your new password (passphrase). <br>Must be 4 characters or longer.</small>
     </div><!-- /form-group -->
     <div class="form-group">
-        <label for="password-confirm">Confirm Password</label>
+        <label for="password-confirm">Confirm new password</label>
         <input class="form-control" type="password" name="new-password-confirm" minlength="4" maxlength="255">
         <small class="form-text text-muted">Please enter the same as above to confirm your new password (passphrase).</small>
     </div><!-- /form-group -->
