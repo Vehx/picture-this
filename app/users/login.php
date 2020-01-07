@@ -22,10 +22,7 @@ if (isset($_POST['email'], $_POST['password'])) {
     }
 
     // calls database to see if theres a user with given email
-    $statement = $pdo->prepare('SELECT * FROM users WHERE email = :email');
-    $statement->bindParam(':email', $email, PDO::PARAM_STR);
-    $statement->execute();
-    $user = $statement->fetch(PDO::FETCH_ASSOC);
+    $user = checkEmail($pdo, $email);
 
     // checks if a user was not found in the database
     // redirects with error if user was not found
