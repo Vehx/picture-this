@@ -49,16 +49,3 @@ const handleLikes = e => {
             }
         });
 };
-
-// const dislikePost = e => {
-//     let postId = e.srcElement.parentElement.dataset.id;
-// console.log(e);
-// console.log(e.srcElement.parentElement.dataset.id);
-
-// console.log("Disliking post : " + postId);
-
-// fetch(likeUrl, {
-//     method: "post",
-//     headers: "application/json"
-// }).then();
-// };

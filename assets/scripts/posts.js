@@ -9,6 +9,34 @@ const createPostBtn = document.querySelector(".post__create-btn");
 const cancelPostBtn = document.querySelector(".post__cancel-btn");
 const postForm = document.querySelector(".post__form");
 
+const handleEdit = e => {
+    let postId = e.srcElement.parentElement.dataset.id;
+    console.log(e);
+    // console.log(e.srcElement.parentElement.dataset.id);
+
+    console.log("Editing post : " + postId);
+
+    // fetch(likeUrl, {
+    //     method: "post",
+    //     headers: "application/json"
+    // }).then();
+};
+
+const handleRemove = e => {
+    let postId = e.srcElement.parentElement.dataset.id;
+    console.log(e);
+    // console.log(e.srcElement.parentElement.dataset.id);
+
+    console.log("Removing post : " + postId);
+    const formData = new FormData();
+    formData.append("");
+
+    // fetch(likeUrl, {
+    //     method: "post",
+    //     headers: "application/json"
+    // }).then();
+};
+
 createPostBtn.addEventListener("click", () => {
     console.log("Creating post :)");
     createPostBtn.classList.add("hidden");
@@ -67,7 +95,7 @@ fetch(postUrl)
                 dislikeBtn.textContent = "Dislike";
                 dislikeBtn.className = "btn btn-secondary post__dislike-btn";
 
-                // todo make into funcion highlightButton
+                // todo make into funcion highlightButton, maybe
                 if (post.liked === "1") {
                     likeBtn.classList.add("btn-primary");
                     likeBtn.classList.remove("btn-secondary");
@@ -99,23 +127,38 @@ fetch(postUrl)
                 }
                 // post div is put in dom
                 postContainer.appendChild(newPost);
-                console.log(newPost);
+                // console.log(newPost);
             });
 
             // grabbing all like and dislike buttons for eventlistener adding
-            const likeButtons = document.querySelectorAll(".post__like-btn");
-            const dislikeButtons = document.querySelectorAll(
-                ".post__dislike-btn"
-            );
+            const likeBtns = document.querySelectorAll(".post__like-btn");
+            const dislikeBtns = document.querySelectorAll(".post__dislike-btn");
+            const editBtns = document.querySelectorAll(".post__edit-btn");
+            const removeBtns = document.querySelectorAll(".post__remove-btn");
 
             // adds like click eventlistener, functions are in likes.js
-            likeButtons.forEach(likeButton => {
-                likeButton.addEventListener("click", handleLikes);
+            likeBtns.forEach(likeBtn => {
+                likeBtn.addEventListener("click", handleLikes);
             });
+
             // adds dislike click eventlistener
-            dislikeButtons.forEach(dislikeButton => {
-                dislikeButton.addEventListener("click", handleLikes);
+            dislikeBtns.forEach(dislikeBtn => {
+                dislikeBtn.addEventListener("click", handleLikes);
             });
+
+            // adds edit click eventlistener to all edit buttons
+            if (editBtns != undefined) {
+                editBtns.forEach(editBtn => {
+                    editBtn.addEventListener("click", handleEdit);
+                });
+            }
+
+            // adds remove click eventlistener to all remove buttons
+            if (removeBtns != undefined) {
+                removeBtns.forEach(removeBtn => {
+                    removeBtn.addEventListener("click", handleRemove);
+                });
+            }
         } else {
             const div = document.createElement("div");
             div.textContent = "There are no posts here yet.";
