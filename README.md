@@ -17,14 +17,24 @@ or `$ git clone git@github.com:Vehx/picture-this.git` in bash if you use ssh. <b
 4. Visit `localhost:5555` in your browser.
 
 ## Features
-* Account registering
+* Register account
 * Login
 * Logout
 * Create post
-* View posts (need to be logged in)
+* View posts
+* Like post
+* Remove like from post
+* Add/change profile avatar
+* Edit email
+* Add/edit biography
+* Change password
 
 ## Extra Features
-*
+* See own like/dislike on post
+* Dislike post
+* Remove dislike from post
+* Likes counter on post
+* Edit name
 
 ## Creator
 * [Bernhard](https://github.com/Vehx)
