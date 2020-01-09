@@ -33,21 +33,21 @@ fetch(postUrl)
             posts.forEach(post => {
                 // all elements of post is made
                 let newPost = document.createElement("div");
-                let h2 = document.createElement("h2");
+                let h4 = document.createElement("h4");
                 let a = document.createElement("a");
                 let img = document.createElement("img");
-                let h3 = document.createElement("h3");
-                let like = document.createElement("button");
-                let dislike = document.createElement("button");
-                let comment = document.createElement("button");
+                let p = document.createElement("p");
+                let likes = document.createElement("p");
+                let likeBtn = document.createElement("button");
+                let dislikeBtn = document.createElement("button");
 
                 // todo make function postElement that makes elements and sets textContent and className
                 // elements are populated with data and classes
                 newPost.className = "post";
                 newPost.setAttribute("data-id", post.id);
 
-                h2.textContent = post.title;
-                h2.className = "post__title";
+                h4.textContent = post.title;
+                h4.className = "post__title";
 
                 a.href = "/profile.php?uid=" + post.user_id;
                 a.className = "post__profile-id";
@@ -55,40 +55,51 @@ fetch(postUrl)
                 img.src = post.picture;
                 img.className = "post__image";
 
-                h3.textContent = post.keywords;
-                h3.className = "post__hashtags";
+                p.textContent = post.keywords;
+                p.className = "post__description";
 
-                like.textContent = "Like";
-                like.className = "btn btn-secondary post__like-btn";
+                p.textContent = post.likes;
+                p.className = "post__likes";
 
-                dislike.textContent = "Dislike";
-                dislike.className = "btn btn-secondary post__dislike-btn";
+                likeBtn.textContent = "Like";
+                likeBtn.className = "btn btn-secondary post__like-btn";
 
-                comment.textContent = "Comment";
-                comment.className = "btn btn-secondary post__comment-btn";
+                dislikeBtn.textContent = "Dislike";
+                dislikeBtn.className = "btn btn-secondary post__dislike-btn";
 
                 // todo make into funcion highlightButton
                 if (post.liked === "1") {
-                    like.classList.add("btn-primary");
-                    like.classList.remove("btn-secondary");
+                    likeBtn.classList.add("btn-primary");
+                    likeBtn.classList.remove("btn-secondary");
                 }
                 if (post.disliked === "1") {
-                    dislike.classList.add("btn-primary");
-                    dislike.classList.remove("btn-secondary");
+                    dislikeBtn.classList.add("btn-primary");
+                    dislikeBtn.classList.remove("btn-secondary");
                 }
 
                 // elements gets put inside post div
-                newPost.appendChild(h2);
+                newPost.appendChild(h4);
                 newPost.appendChild(a);
                 newPost.appendChild(img);
-                newPost.appendChild(h3);
-                newPost.appendChild(like);
-                newPost.appendChild(dislike);
-                newPost.appendChild(comment);
+                newPost.appendChild(p);
+                newPost.appendChild(likes);
+                newPost.appendChild(likeBtn);
+                newPost.appendChild(dislikeBtn);
+                if (userId === post.user_id) {
+                    let edit = document.createElement("button");
+                    let remove = document.createElement("button");
 
+                    edit.textContent = "Edit";
+                    edit.className = "btn btn-secondary post__edit-btn";
+
+                    remove.textContent = "Delete";
+                    remove.className = "btn btn-secondary post__remove-btn";
+                    newPost.appendChild(edit);
+                    newPost.appendChild(remove);
+                }
                 // post div is put in dom
                 postContainer.appendChild(newPost);
-                // console.log(newPost);
+                console.log(newPost);
             });
 
             // grabbing all like and dislike buttons for eventlistener adding
