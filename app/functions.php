@@ -333,7 +333,7 @@ if (!function_exists('getPosts')) {
         $partTwo =  'ORDER BY id DESC';
         if ($postId != '*') {
             $postId = filter_var($postId, FILTER_SANITIZE_STRING);
-            $partTwo = "WHERE post_id = $postId";
+            $partTwo = "WHERE id = $postId";
         }
 
         $query = $partOne . $partTwo;
