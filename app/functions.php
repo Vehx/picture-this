@@ -317,3 +317,28 @@ if (!function_exists('isImageOk')) {
         return true;
     }
 }
+
+if (!function_exists('getPosts')) {
+    /**
+     * Gets posts/post from database.
+     * 
+     * @param object $database
+     * @param string $postId
+     *
+     * @return array
+     */
+    function getPosts(object $database, string $postId = '*')
+    {
+        $partOne = 'SELECT * FROM posts ';
+        $partTwo =  'ORDER BY id DESC';
+        if ($postId != '*') {
+            $postId = filter_var($postId, FILTER_SANITIZE_STRING);
+            $partTwo = "WHERE post_id = $postId";
+        }
+
+        $query = $partOne . $partTwo;
+        $statement = $database->prepare($query);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+}

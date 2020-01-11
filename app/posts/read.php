@@ -10,10 +10,8 @@ if (!isset($_SESSION['user'])) {
 
 if (isset($_SESSION['user'])) {
 
-    // calls database to see if theres a user with given email
-    $statement = $pdo->prepare('SELECT * FROM posts ORDER BY id DESC');
-    $statement->execute();
-    $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
+    // gets posts from database to send to posts.js
+    $posts = getPosts($pdo);
 
     $postsWithLikes = getLikes($posts, $_SESSION['user']['id'], $pdo);
     echo json_encode($postsWithLikes);
