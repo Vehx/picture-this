@@ -141,14 +141,14 @@ if (!function_exists('removeLike')) {
      * Removes like from database. Send in database, postId and userId.
      * Function will then query database with delete statement.
      * 
-     * @param mixed $database
+     * @param object $database
      *
      * @param string $postId
      * @param string $userId
      * 
      * @return void
      */
-    function removeLike($database, $postId, $userId)
+    function removeLike(object $database, string $postId, string $userId)
     {
         $statement = $database->prepare('DELETE FROM likes WHERE post_id = :post_id AND user_id = :user_id');
         $statement->bindParam(':post_id', $postId, PDO::PARAM_INT);
