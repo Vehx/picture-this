@@ -320,25 +320,55 @@ if (!function_exists('isImageOk')) {
 
 if (!function_exists('getPosts')) {
     /**
-     * Gets posts/post from database.
+     * Gets posts from database.
+     * 
+     * @param object $database
+     *
+     * @return array
+     */
+    function getPosts(object $database)
+    {
+        $statement = $database->prepare('SELECT * FROM posts ORDER BY id DESC');
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
+
+if (!function_exists('getPost')) {
+    /**
+     * Gets post from database.
      * 
      * @param object $database
      * @param string $postId
      *
      * @return array
      */
-    function getPosts(object $database, string $postId = '*')
+    function getPost(object $database, string $postId)
     {
-        $partOne = 'SELECT * FROM posts ';
-        $partTwo =  'ORDER BY id DESC';
-        if ($postId != '*') {
-            $postId = filter_var($postId, FILTER_SANITIZE_STRING);
-            $partTwo = "WHERE id = $postId";
-        }
-
-        $query = $partOne . $partTwo;
-        $statement = $database->prepare($query);
+        $statement = $database->prepare("SELECT * FROM posts WHERE id = $postId");
         $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+}
+
+
+if (!function_exists('deletePost')) {
+    /**
+     * Deletes post from database.
+     * Database to delete from, post id to delete and user id of post owner.
+     * 
+     * @param object $database
+     * @param string $postId
+     * @param string $userId
+     *
+     * @return void
+     */
+    function deletePost(object $database, string $postId, string $userId)
+    {
+        $statement = $database->prepare('DELETE FROM posts WHERE id = :post_id AND user_id = :user_id');
+        $statement->bindParam(':post_id', $postId, PDO::PARAM_INT);
+        $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
+
+        $statement->execute();
     }
 }

@@ -9,8 +9,14 @@ if (!isset($_SESSION['user'])) {
 }
 
 if (isset($_POST['post-id'])) {
+    $postId = filter_var($_POST['post-id'], FILTER_SANITIZE_STRING);
+    $userId = $_SESSION['user']['id'];
 
-    // if ($_SESSION['user']['id'] === )
+    // gets post to be deleted from database to check that the user that made it is the same trying to delete it
+    $databasePost = getPost($pdo, $postId);
+    if ($userId === $databasePost['user_id']) {
+        deletePost($pdo, $postId, $userId);
+    }
 }
 
 redirect('/');

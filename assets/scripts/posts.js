@@ -32,13 +32,13 @@ const handleRemove = e => {
     // console.log(e.srcElement.parentElement.dataset.id);
 
     console.log("Removing post : " + postId);
-    // const formData = new FormData();
-    // formData.append("post-id", `${postId}`);
+    const formData = new FormData();
+    formData.append("post-id", `${postId}`);
 
-    // fetch(postsDeleteUrl, {
-    //     method: "post",
-    //     body: formData
-    // }).then();
+    fetch(postsDeleteUrl, {
+        method: "post",
+        body: formData
+    });
 };
 
 createPostBtn.addEventListener("click", () => {
