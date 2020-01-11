@@ -3,7 +3,9 @@
 console.log("Posts loaded.");
 
 // in this file posts are fetched if any exsists and then made into post elements and placed in the dom post-container
-const postUrl = "/app/posts/read.php";
+const postsReadUrl = "/app/posts/read.php";
+const postsUpdateUrl = "/app/posts/update.php";
+const postsDeleteUrl = "/app/posts/delete.php";
 
 const createPostBtn = document.querySelector(".post__create-btn");
 const cancelPostBtn = document.querySelector(".post__cancel-btn");
@@ -11,14 +13,16 @@ const postForm = document.querySelector(".post__form");
 
 const handleEdit = e => {
     let postId = e.srcElement.parentElement.dataset.id;
-    console.log(e);
+    console.log(e.srcElement);
     // console.log(e.srcElement.parentElement.dataset.id);
 
     console.log("Editing post : " + postId);
+    // const formData = new FormData();
+    // formData.append("post-id", `${postId}`);
 
-    // fetch(likeUrl, {
+    // fetch(postsUpdateUrl, {
     //     method: "post",
-    //     headers: "application/json"
+    //     body: formData
     // }).then();
 };
 
@@ -28,12 +32,12 @@ const handleRemove = e => {
     // console.log(e.srcElement.parentElement.dataset.id);
 
     console.log("Removing post : " + postId);
-    const formData = new FormData();
-    formData.append("");
+    // const formData = new FormData();
+    // formData.append("post-id", `${postId}`);
 
-    // fetch(likeUrl, {
+    // fetch(postsDeleteUrl, {
     //     method: "post",
-    //     headers: "application/json"
+    //     body: formData
     // }).then();
 };
 
@@ -51,7 +55,7 @@ cancelPostBtn.addEventListener("click", () => {
     postForm.classList.add("hidden");
 });
 
-fetch(postUrl)
+fetch(postsReadUrl)
     .then(response => response.json())
     .then(posts => {
         const postContainer = document.querySelector(".post__container");
@@ -122,6 +126,7 @@ fetch(postUrl)
 
                     remove.textContent = "Delete";
                     remove.className = "btn btn-secondary post__remove-btn";
+
                     newPost.appendChild(edit);
                     newPost.appendChild(remove);
                 }
