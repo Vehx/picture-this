@@ -345,7 +345,8 @@ if (!function_exists('getPost')) {
      */
     function getPost(object $database, string $postId)
     {
-        $statement = $database->prepare("SELECT * FROM posts WHERE id = $postId");
+        $statement = $database->prepare('SELECT * FROM posts WHERE id = :id');
+        $statement->bindParam(':id', $postId, PDO::PARAM_INT);
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
