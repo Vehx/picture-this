@@ -29,7 +29,7 @@ if (isset($_POST, $_FILES['image'])) {
     $statement = $pdo->prepare('INSERT INTO posts (user_id, image, description) VALUES (:user_id, :image, :description)');
     $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $statement->bindParam(':image', $imagePath, PDO::PARAM_STR);
-    if ($descriptionExist) {
+    if ($descriptionExists) {
         $statement->bindParam(':description', $description, PDO::PARAM_STR);
     }
     $statement->execute();
