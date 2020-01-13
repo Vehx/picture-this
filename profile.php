@@ -13,7 +13,7 @@
         <?php echo $name; ?>
     </h1>
 
-    <img class="profile__avatar" src="<?php echo $avatar; ?>" alt="<?php echo $name; ?>'s avatar picture">
+    <img class="rounded-circle profile__avatar" height="75" width="75" src="<?php echo $avatar; ?>" alt="<?php echo $name; ?>'s avatar picture">
 
     <h4 class="profile__biography-title">Biography</h4>
     <p class="profile__biography">
