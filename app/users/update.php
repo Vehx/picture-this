@@ -23,10 +23,13 @@ if (isset($_POST) || isset($_FILES)) {
 
     // checks if name is sent
     if (isset($_POST['name'])) {
+
         // cleans sent name up
         $newName = filter_var(trim($_POST['name']), FILTER_SANITIZE_STRING);
+
         // checks that name is not same as old name and not an empty string
         if (!($newName === $oldName) && $newName != '') {
+
             // sends changes to be made in database
             $hasChanged = true;
             updateDatabase($pdo, $databaseTable, $id, 'name', $newName);
@@ -35,18 +38,23 @@ if (isset($_POST) || isset($_FILES)) {
 
     // checks if avatar is sent
     if (isset($_FILES['avatar'])) {
-        $_SESSION['errors'][] = "hi from image isset";
 
         // checks that it's not an empty string
         if ($_FILES['avatar'] != '') {
+
             // checks that it's ok, not too big and of the right type
             if (isImageOk($_FILES['avatar']['size'], $_FILES['avatar']['type'])) {
+
                 // prepares image, gives it a uuid and moves it to the uploads/avatars folder
                 $newAvatar = prepareImage($_FILES['avatar']['name'], $_FILES['avatar']['tmp_name'], true);
+
+                // deletes old avatar from uploads folder
+                unlink(__DIR__ . '/../../' . $oldAvatar);
+
                 // sends changes to be made in database
-                $_SESSION['errors'][] = "hi from image";
                 $hasChanged = true;
                 updateDatabase($pdo, $databaseTable, $id, 'avatar', $newAvatar);
+                $_SESSION['user']['avatar'] = $newAvatar;
             } else {
                 // redirects back with errors from isImageOk function
                 redirect('/profile.php');
@@ -58,6 +66,7 @@ if (isset($_POST) || isset($_FILES)) {
     if (isset($_POST['biography'])) {
         $newBiography = filter_var(trim($_POST['biography']), FILTER_SANITIZE_STRING);
         if (!($newBiography === $oldBiography) || $newBiography != '') {
+
             // sends changes to be made in database
             $hasChanged = true;
             updateDatabase($pdo, $databaseTable, $id, 'biography', $newBiography);
@@ -67,11 +76,13 @@ if (isset($_POST) || isset($_FILES)) {
     // checks if email is sent
     if (isset($_POST['email'])) {
         $newEmail = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+
         // checks database for email, to make sure it isn't a duplicate
         $emailCheckUser = checkEmail($pdo, $newEmail);
 
         // checks that new email is not same as old email, not an empty string and not an already existing email
         if (!($newEmail === $oldEmail) && $newEmail != '' && !isset($emailCheckUser['email'])) {
+
             // sends changes to be made in database
             $hasChanged = true;
             updateDatabase($pdo, $databaseTable, $id, 'email', $newEmail);
