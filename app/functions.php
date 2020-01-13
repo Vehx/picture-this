@@ -174,14 +174,14 @@ if (!function_exists('setLike')) {
      * @param string $userId
      * 
      * @param string $liked
-     * @param string $likedType
+     * @param int $likedType
      * 
      * @param string $disliked
-     * @param string $dislikedType
+     * @param int $dislikedType
      *
      * @return void
      */
-    function setLike(object $statement, string $postId, string $userId, string $liked, string $likedType, string $disliked, string $dislikedType)
+    function setLike(object $statement, string $postId, string $userId, string $liked, int $likedType, string $disliked, int $dislikedType)
     {
         $statement->bindParam(':post_id', $postId, PDO::PARAM_INT);
         $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);

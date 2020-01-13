@@ -40,12 +40,12 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
             if ($action === 'like') {
                 $liked = 'yes';
                 $likedType = PDO::PARAM_STR;
-                $disliked = null;
+                $disliked = '';
                 $dislikedType = PDO::PARAM_NULL;
                 $likesState = $postId . ' is liked.';
             }
             if ($action === 'dislike') {
-                $liked = null;
+                $liked = '';
                 $likedType = PDO::PARAM_NULL;
                 $disliked = 'yes';
                 $dislikedType = PDO::PARAM_STR;
@@ -70,12 +70,12 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
             if ($action === 'like') {
                 $liked = 'yes';
                 $likedType = PDO::PARAM_STR;
-                $disliked = null;
+                $disliked = '';
                 $dislikedType = PDO::PARAM_NULL;
                 $likesState = $postId . ' is liked.';
             }
             if ($action === 'dislike') {
-                $liked = null;
+                $liked = '';
                 $likedType = PDO::PARAM_NULL;
                 $disliked = 'yes';
                 $dislikedType = PDO::PARAM_STR;
