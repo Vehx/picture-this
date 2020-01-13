@@ -65,7 +65,7 @@ fetch(postsReadUrl)
             posts.forEach(post => {
                 // all elements of post is made
                 let newPost = document.createElement("div");
-                let h4 = document.createElement("h4");
+                // let h4 = document.createElement("h4");
                 let a = document.createElement("a");
                 let img = document.createElement("img");
                 let p = document.createElement("p");
@@ -75,31 +75,34 @@ fetch(postsReadUrl)
 
                 // todo make function postElement that makes elements and sets textContent and className
                 // elements are populated with data and classes
-                newPost.className = "post";
+                newPost.className = "border py-3 mw-100 mvh-80 post";
                 newPost.setAttribute("data-id", post.id);
 
-                h4.textContent = post.title;
-                h4.className = "post__title";
+                // h4.textContent = post.title;
+                // h4.className = "post__title";
 
+                a.textContent = post.user_name;
                 a.href = "/profile.php?uid=" + post.user_id;
                 a.className = "post__profile-id";
 
                 img.src = post.picture;
-                img.className = "post__image";
+                img.className = "mw-100 post__image";
 
                 p.textContent = post.keywords;
                 p.className = "post__description";
 
-                p.textContent = post.likes;
-                p.className = "post__likes";
+                likes.textContent = post.likes;
+                likes.className = "post__likes";
 
                 likeBtn.textContent = "Like";
-                likeBtn.className = "btn btn-secondary post__like-btn";
+                likeBtn.className =
+                    "ml-1 mt-1 btn btn-secondary post__like-btn";
 
                 dislikeBtn.textContent = "Dislike";
-                dislikeBtn.className = "btn btn-secondary post__dislike-btn";
+                dislikeBtn.className =
+                    "ml-1 mt-1 btn btn-secondary post__dislike-btn";
 
-                // todo make into funcion highlightButton, maybe
+                // like or dislike gets highlighted
                 if (post.liked === "1") {
                     likeBtn.classList.add("btn-primary");
                     likeBtn.classList.remove("btn-secondary");
@@ -110,35 +113,59 @@ fetch(postsReadUrl)
                 }
 
                 // elements gets put inside post div
-                newPost.appendChild(h4);
+                // newPost.appendChild(h4);
                 newPost.appendChild(a);
                 newPost.appendChild(img);
                 newPost.appendChild(p);
                 newPost.appendChild(likes);
                 newPost.appendChild(likeBtn);
                 newPost.appendChild(dislikeBtn);
+
+                // elements gets made that should only show if post is from current user
                 if (userId === post.user_id) {
+                    let postOptions = document.createElement("div");
                     let edit = document.createElement("button");
+                    let save = document.createElement("button");
                     let remove = document.createElement("button");
+                    let editFrom = document.createElement("form");
+
+                    const editFromTemplate = `<div class="form-group">
+                        <label for="edit-image">Image : </label>
+                        <input type="file" name="edit-image" id="edit-image" accept="jpeg, jpg, png">
+                    </div><!-- /form-group -->
+                    <div class="form-group">
+                        <label for="edit-description">Description (optional) : </label>
+                        <input type="text" name="edit-description" id="edit-description">
+                    </div><!-- /form-group -->
+                    <button type="submit" class="ml-1 mt-1 btn btn-primary post__submit-btn">Submit post</button>`;
+                    editFrom.innerHTML = editFromTemplate;
 
                     edit.textContent = "Edit";
-                    edit.className = "btn btn-secondary post__edit-btn";
+                    edit.className =
+                        "ml-1 mt-1 btn btn-secondary btn-sm post__edit-btn";
+
+                    save.textContent = "Save";
+                    save.className =
+                        "ml-1 mt-1 btn btn-secondary post__save-btn hidden";
 
                     remove.textContent = "Delete";
-                    remove.className = "btn btn-secondary post__remove-btn";
+                    remove.className =
+                        "ml-1 mt-1 btn btn-secondary btn-sm post__remove-btn";
 
-                    newPost.appendChild(edit);
-                    newPost.appendChild(remove);
+                    postOptions.appendChild(edit);
+                    postOptions.appendChild(save);
+                    postOptions.appendChild(remove);
+                    newPost.appendChild(postOptions);
                 }
                 // post div is put in dom
                 postContainer.appendChild(newPost);
-                // console.log(newPost);
             });
 
             // grabbing all like and dislike buttons for eventlistener adding
             const likeBtns = document.querySelectorAll(".post__like-btn");
             const dislikeBtns = document.querySelectorAll(".post__dislike-btn");
             const editBtns = document.querySelectorAll(".post__edit-btn");
+            const saveBtns = document.querySelectorAll(".post__save-btn");
             const removeBtns = document.querySelectorAll(".post__remove-btn");
 
             // adds like click eventlistener, functions are in likes.js
@@ -154,7 +181,14 @@ fetch(postsReadUrl)
             // adds edit click eventlistener to all edit buttons
             if (editBtns != undefined) {
                 editBtns.forEach(editBtn => {
-                    editBtn.addEventListener("click", handleEdit);
+                    editBtn.addEventListener("click", () => {});
+                });
+            }
+
+            // adds save edit click eventlistener to all save buttons
+            if (saveBtns != undefined) {
+                saveBtns.forEach(saveBtn => {
+                    saveBtn.addEventListener("click", handleRemove);
                 });
             }
 

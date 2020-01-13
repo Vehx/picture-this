@@ -2,16 +2,12 @@
 
 <article>
     <h1><?php echo $config['title']; ?></h1>
-    <p>This is the home page.</p>
+    <p>The site to share your imgs.</p>
 </article>
 
 <?php if (isset($_SESSION['user'])) : ?>
     <section>
         <form action="app/posts/create.php" method="POST" enctype="multipart/form-data" class="post__form hidden">
-            <div class="form-group">
-                <label for="title">Title : </label>
-                <input type="text" name="title" id="title" required>
-            </div><!-- /form-group -->
             <div class="form-group">
                 <label for="image">Image : </label>
                 <input type="file" name="image" id="image" accept="jpeg, jpg, png" required>
@@ -32,8 +28,6 @@
     <script src="assets/scripts/likes.js"></script>
     <script src="assets/scripts/posts.js"></script>
 <?php endif; ?>
-<div class="alert alert-info" role="alert">
-    <?php showErrors(); ?>
-</div>
 
+<?php showErrors(); ?>
 <?php require __DIR__ . '/views/footer.php'; ?>
