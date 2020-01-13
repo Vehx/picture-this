@@ -41,7 +41,7 @@ if (isset($_POST) || isset($_FILES)) {
     if (isset($_FILES['avatar'])) {
 
         // checks that it's not an empty string
-        if ($_FILES['avatar'] != '') {
+        if ($_FILES['avatar']['name'] != '') {
 
             // checks that it's ok, not too big and of the right type
             if (isImageOk($_FILES['avatar']['size'], $_FILES['avatar']['type'])) {
