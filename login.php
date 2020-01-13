@@ -18,9 +18,9 @@
 
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
-    <div class="alert alert-info" role="alert">
-        <?php showErrors(); ?>
-    </div>
+
+    <?php showErrors(); ?>
+
 </article>
 
 <?php require __DIR__ . '/views/footer.php'; ?>

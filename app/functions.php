@@ -29,7 +29,11 @@ if (!function_exists('showErrors')) {
     {
         if (isset($_SESSION['errors'])) {
             foreach ($_SESSION['errors'] as $error) {
-                echo $error;
+?>
+                <div class="alert alert-info" role="alert">
+                    <?php echo $error; ?>
+                </div>
+<?php
             }
             unset($_SESSION['errors']);
         }

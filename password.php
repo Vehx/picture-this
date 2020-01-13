@@ -21,7 +21,7 @@
 
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
-<div class="alert alert-info" role="alert">
-    <?php showErrors(); ?>
-</div>
+
+<?php showErrors(); ?>
+
 <?php require __DIR__ . '/views/footer.php'; ?>
