@@ -7,11 +7,9 @@ console.log("Likes loaded.");
 const likeUrl = "/app/likes/likes.php";
 
 const handleLikes = e => {
-    let postId = e.srcElement.parentElement.dataset.id;
+    let postId = e.srcElement.parentElement.parentElement.dataset.id;
     let currentBtn = e.srcElement;
     let otherBtn;
-    // console.log(e);
-    // console.log(e.srcElement.parentElement.dataset.id);
 
     console.log("Doing stuff on post : " + postId);
     const formData = new FormData();

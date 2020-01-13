@@ -50,7 +50,9 @@ if (isset($_POST) || isset($_FILES)) {
                 $newAvatar = prepareImage($_FILES['avatar']['name'], $_FILES['avatar']['tmp_name'], true);
 
                 // deletes old avatar from uploads folder
-                unlink(__DIR__ . '/../../' . $oldAvatar);
+                if ($oldAvatar != '') {
+                    unlink(__DIR__ . '/../../' . $oldAvatar);
+                }
 
                 // sends changes to be made in database
                 $hasChanged = true;
@@ -82,16 +84,19 @@ if (isset($_POST) || isset($_FILES)) {
         // checks database for email, to make sure it isn't a duplicate
         $emailCheckUser = checkEmail($pdo, $newEmail);
 
-        // checks that new email is not same as old email, not an empty string and not an already existing email
-        if (!($newEmail === $oldEmail) && $newEmail != '' && !isset($emailCheckUser['email'])) {
+        // checks that new email is not same as old email 
+        if (!($newEmail === $oldEmail)) {
+            // not an empty string and not an already existing email
+            if ($newEmail != '' && !isset($emailCheckUser['email'])) {
 
-            // sends changes to be made in database
-            $hasChanged = true;
-            updateDatabase($pdo, $databaseTable, $id, 'email', $newEmail);
-            $_SESSION['user']['email'] = $newEmail;
-        } else {
-            $_SESSION['errors'][] = "Please enter a valid email.";
-            redirect('/profile.php');
+                // sends changes to be made in database
+                $hasChanged = true;
+                updateDatabase($pdo, $databaseTable, $id, 'email', $newEmail);
+                $_SESSION['user']['email'] = $newEmail;
+            } else {
+                $_SESSION['errors'][] = "Please enter a valid email.";
+                redirect('/profile.php');
+            }
         }
     }
 
