@@ -47,7 +47,9 @@
 
         <script src="assets/scripts/profile.js"></script>
     <?php endif; ?>
-    <?php showErrors(); ?>
+    <div class="alert alert-info" role="alert">
+        <?php showErrors(); ?>
+    </div>
 </article>
 
 <?php require __DIR__ . '/views/footer.php'; ?>

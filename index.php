@@ -32,6 +32,8 @@
     <script src="assets/scripts/likes.js"></script>
     <script src="assets/scripts/posts.js"></script>
 <?php endif; ?>
-<?php showErrors(); ?>
+<div class="alert alert-info" role="alert">
+    <?php showErrors(); ?>
+</div>
 
 <?php require __DIR__ . '/views/footer.php'; ?>
