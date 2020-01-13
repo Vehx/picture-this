@@ -11,33 +11,18 @@ const createPostBtn = document.querySelector(".post__create-btn");
 const cancelPostBtn = document.querySelector(".post__cancel-btn");
 const postForm = document.querySelector(".post__form");
 
-const handleEdit = e => {
-    let postId = e.srcElement.parentElement.dataset.id;
-    console.log(e.srcElement);
-    // console.log(e.srcElement.parentElement.dataset.id);
-
-    console.log("Editing post : " + postId);
-    // const formData = new FormData();
-    // formData.append("post-id", `${postId}`);
-
-    // fetch(postsUpdateUrl, {
-    //     method: "post",
-    //     body: formData
-    // }).then();
-};
-
+// function to delete post, after its posts to server it hides the post
 const handleRemove = e => {
     let postId = e.srcElement.parentElement.dataset.id;
-    console.log(e);
-    // console.log(e.srcElement.parentElement.dataset.id);
 
-    console.log("Removing post : " + postId);
     const formData = new FormData();
     formData.append("post-id", `${postId}`);
 
     fetch(postsDeleteUrl, {
         method: "post",
         body: formData
+    }).then(() => {
+        e.srcElement.parentElement.classList.add("hidden");
     });
 };
 
@@ -63,27 +48,38 @@ fetch(postsReadUrl)
 
         if (!(posts.length === 0)) {
             posts.forEach(post => {
-                // all elements of post is made
+                // a new post is made
                 let newPost = document.createElement("div");
-                // let h4 = document.createElement("h4");
-                let a = document.createElement("a");
-                let img = document.createElement("img");
-                let p = document.createElement("p");
-                let likes = document.createElement("p");
-                let likeBtn = document.createElement("button");
-                let dislikeBtn = document.createElement("button");
 
-                // todo make function postElement that makes elements and sets textContent and className
                 // elements are populated with data and classes
-                newPost.className = "border py-3 mw-100 mvh-80 post";
+                newPost.className = "border p-2 my-2 mw-100 mvh-80 post";
                 newPost.setAttribute("data-id", post.id);
 
-                // h4.textContent = post.title;
-                // h4.className = "post__title";
+                // start of originalPoster box creation
+                let originalPosterBox = document.createElement("div");
+                let originalPosterImg = document.createElement("img");
+                let originalPosterLink = document.createElement("a");
+                originalPosterBox.className = "post__poster-container";
 
-                a.textContent = post.poster_name;
-                a.href = "/profile.php?uid=" + post.user_id;
-                a.className = "post__profile-id";
+                originalPosterImg.src = post.poster_avatar;
+                originalPosterImg.alt = post.poster_name + "'s avatar image";
+                originalPosterImg.className = "rounded-circle";
+                originalPosterImg.height = "75";
+                originalPosterImg.width = "75";
+
+                originalPosterLink.textContent = post.poster_name;
+                originalPosterLink.href = "/profile.php?uid=" + post.user_id;
+                originalPosterLink.className = "post__profile-id";
+
+                originalPosterBox.appendChild(originalPosterImg);
+                originalPosterBox.appendChild(originalPosterLink);
+                // end of originalPoster box creation
+
+                // start of main post box creation
+                let postContentBox = document.createElement("div");
+                let img = document.createElement("img");
+                let p = document.createElement("p");
+                postContentBox.className = "m-1 mvh-75 post__content";
 
                 img.src = post.image;
                 img.className = "mw-100 post__image";
@@ -91,8 +87,20 @@ fetch(postsReadUrl)
                 p.textContent = post.description;
                 p.className = "post__description";
 
+                postContentBox.appendChild(img);
+                postContentBox.appendChild(p);
+                //end of main post box creation
+
+                // start of like box creation
+                let likeBox = document.createElement("div");
+                let likes = document.createElement("span");
+                let likeBtn = document.createElement("button");
+                let dislikeBtn = document.createElement("button");
+
+                likeBox.className = "mw-50";
+
                 likes.textContent = post.likes;
-                likes.className = "post__likes";
+                likes.className = "mx-2 post__likes";
 
                 likeBtn.textContent = "Like";
                 likeBtn.className =
@@ -111,49 +119,55 @@ fetch(postsReadUrl)
                     dislikeBtn.classList.add("btn-primary");
                     dislikeBtn.classList.remove("btn-secondary");
                 }
+                likeBox.appendChild(likes);
+                likeBox.appendChild(likeBtn);
+                likeBox.appendChild(dislikeBtn);
+                // end of like box creation
 
                 // elements gets put inside post div
-                // newPost.appendChild(h4);
-                newPost.appendChild(a);
-                newPost.appendChild(img);
-                newPost.appendChild(p);
-                newPost.appendChild(likes);
-                newPost.appendChild(likeBtn);
-                newPost.appendChild(dislikeBtn);
+                newPost.appendChild(originalPosterBox);
+                newPost.appendChild(postContentBox);
+                newPost.appendChild(likeBox);
 
                 // elements gets made that should only show if post is from current user
                 if (userId === post.user_id) {
                     let postOptions = document.createElement("div");
                     let edit = document.createElement("button");
-                    let save = document.createElement("button");
+                    let cancelEdit = document.createElement("button");
                     let remove = document.createElement("button");
-                    let editFrom = document.createElement("form");
+                    let editForm = document.createElement("form");
 
-                    const editFromTemplate = `<div class="form-group">
-                        <label for="edit-image">Image : </label>
-                        <input type="file" name="edit-image" id="edit-image" accept="jpeg, jpg, png">
+                    const editFormTemplate = `<div class="form-group">
+                    <label for="edit-image">Image : </label>
+                    <input type="file" name="edit-image" id="edit-image" accept="jpeg, jpg, png">
                     </div><!-- /form-group -->
                     <div class="form-group">
-                        <label for="edit-description">Description (optional) : </label>
-                        <input type="text" name="edit-description" id="edit-description">
+                    <label for="edit-description">Description (optional) : </label>
+                    <input type="text" name="edit-description" id="edit-description" value="${post.description}">
                     </div><!-- /form-group -->
                     <button type="submit" class="ml-1 mt-1 btn btn-primary post__submit-edit-btn">Save</button>`;
-                    editFrom.innerHTML = editFromTemplate;
+
+                    editForm.innerHTML = editFormTemplate;
+                    editForm.action = "app/posts/update.php";
+                    editForm.method = "post";
+                    editForm.enctype = "multipart/form-data";
+                    editForm.classList = "post__edit-form hidden";
 
                     edit.textContent = "Edit";
                     edit.className =
                         "ml-1 mt-1 btn btn-secondary btn-sm post__edit-btn";
 
-                    save.textContent = "Save";
-                    save.className =
-                        "ml-1 mt-1 btn btn-secondary post__save-btn hidden";
+                    cancelEdit.textContent = "Cancel";
+                    cancelEdit.className =
+                        "ml-1 mt-1 btn btn-secondary btn-sm post__cancel-edit-btn hidden";
 
                     remove.textContent = "Delete";
                     remove.className =
                         "ml-1 mt-1 btn btn-secondary btn-sm post__remove-btn";
 
+                    postOptions.appendChild(editForm);
                     postOptions.appendChild(edit);
-                    postOptions.appendChild(save);
+                    postOptions.appendChild(cancelEdit);
                     postOptions.appendChild(remove);
                     newPost.appendChild(postOptions);
                 }
@@ -165,7 +179,9 @@ fetch(postsReadUrl)
             const likeBtns = document.querySelectorAll(".post__like-btn");
             const dislikeBtns = document.querySelectorAll(".post__dislike-btn");
             const editBtns = document.querySelectorAll(".post__edit-btn");
-            const saveBtns = document.querySelectorAll(".post__save-btn");
+            const cancelEditBtns = document.querySelectorAll(
+                ".post__cancel-edit-btn"
+            );
             const removeBtns = document.querySelectorAll(".post__remove-btn");
 
             // adds like click eventlistener, functions are in likes.js
@@ -181,14 +197,27 @@ fetch(postsReadUrl)
             // adds edit click eventlistener to all edit buttons
             if (editBtns != undefined) {
                 editBtns.forEach(editBtn => {
-                    editBtn.addEventListener("click", () => {});
+                    editBtn.addEventListener("click", e => {
+                        e.srcElement.parentElement.firstChild.classList.remove(
+                            "hidden"
+                        );
+                        e.srcElement.classList.add("hidden");
+                        e.srcElement.nextSibling.classList.remove("hidden");
+                        console.log(e.srcElement);
+                    });
                 });
             }
 
-            // adds save edit click eventlistener to all save buttons
-            if (saveBtns != undefined) {
-                saveBtns.forEach(saveBtn => {
-                    saveBtn.addEventListener("click", handleRemove);
+            // adds cancel edit click eventlistener to all cancel edit buttons
+            if (cancelEditBtns != undefined) {
+                cancelEditBtns.forEach(cancelEditBtn => {
+                    cancelEditBtn.addEventListener("click", e => {
+                        e.srcElement.parentElement.firstChild.classList.add(
+                            "hidden"
+                        );
+                        e.srcElement.previousSibling.classList.remove("hidden");
+                        e.srcElement.classList.add("hidden");
+                    });
                 });
             }
 
