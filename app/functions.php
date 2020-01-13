@@ -28,8 +28,7 @@ if (!function_exists('showErrors')) {
     function showErrors()
     {
         if (isset($_SESSION['errors'])) {
-            foreach ($_SESSION['errors'] as $error) {
-?>
+            foreach ($_SESSION['errors'] as $error) { ?>
                 <div class="alert alert-info" role="alert">
                     <?php echo $error; ?>
                 </div>
@@ -113,14 +112,14 @@ if (!function_exists('getUserLikes')) {
      * Takes id of post and user to check, column to check liked/disliked and database.
      * Returns result stored in column, yes or no in case of liked/disliked.
      * 
-     * @param string $postId
+     * @param object $database
+     * @param int $postId
      * @param string $userId
      * @param string $column
-     * @param mixed $database
      *
      * @return string
      */
-    function getUserLikes($database, $postId, $userId, $column)
+    function getUserLikes(object $database, int $postId, string $userId, string $column)
     {
         $query = "SELECT count(*) FROM likes WHERE post_id = :post_id AND user_id = :user_id AND ";
         if ($column === 'liked') {
@@ -169,20 +168,20 @@ if (!function_exists('setLike')) {
      * likedType and dislikedType are pdo param variables,
      * either PDO::PARAM_STR or PDO::PARAM_NULL depending on what like and disliked is set to.
      * 
-     * @param mixed $statment
+     * @param object $statment
      * 
      * @param string $postId
      * @param string $userId
      * 
-     * @param mixed $liked
-     * @param mixed $likedType
+     * @param string $liked
+     * @param string $likedType
      * 
-     * @param mixed $disliked
-     * @param mixed $dislikedType
+     * @param string $disliked
+     * @param string $dislikedType
      *
      * @return void
      */
-    function setLike($statement, $postId, $userId, $liked, $likedType, $disliked, $dislikedType)
+    function setLike(object $statement, string $postId, string $userId, string $liked, string $likedType, string $disliked, string $dislikedType)
     {
         $statement->bindParam(':post_id', $postId, PDO::PARAM_INT);
         $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
@@ -197,12 +196,12 @@ if (!function_exists('getProfile')) {
     /**
      * Gets profile information from the database about the user sent in.
      * 
-     * @param mixed $database
+     * @param object $database
      * @param string $id
      *
      * @return string
      */
-    function getProfile($database, $id)
+    function getProfile(object $database, string $id)
     {
         $query = 'SELECT * FROM users WHERE id = :id';
         $statement = $database->prepare($query);
