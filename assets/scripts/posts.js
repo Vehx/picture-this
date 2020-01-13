@@ -81,14 +81,14 @@ fetch(postsReadUrl)
                 // h4.textContent = post.title;
                 // h4.className = "post__title";
 
-                a.textContent = post.user_name;
+                a.textContent = post.poster_name;
                 a.href = "/profile.php?uid=" + post.user_id;
                 a.className = "post__profile-id";
 
-                img.src = post.picture;
+                img.src = post.image;
                 img.className = "mw-100 post__image";
 
-                p.textContent = post.keywords;
+                p.textContent = post.description;
                 p.className = "post__description";
 
                 likes.textContent = post.likes;
@@ -137,7 +137,7 @@ fetch(postsReadUrl)
                         <label for="edit-description">Description (optional) : </label>
                         <input type="text" name="edit-description" id="edit-description">
                     </div><!-- /form-group -->
-                    <button type="submit" class="ml-1 mt-1 btn btn-primary post__submit-btn">Submit post</button>`;
+                    <button type="submit" class="ml-1 mt-1 btn btn-primary post__submit-edit-btn">Save</button>`;
                     editFrom.innerHTML = editFromTemplate;
 
                     edit.textContent = "Edit";
