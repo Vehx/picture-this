@@ -33,6 +33,7 @@ if (isset($_POST) || isset($_FILES)) {
             // sends changes to be made in database
             $hasChanged = true;
             updateDatabase($pdo, $databaseTable, $id, 'name', $newName);
+            $_SESSION['user']['name'] = $newName;
         }
     }
 
@@ -70,6 +71,7 @@ if (isset($_POST) || isset($_FILES)) {
             // sends changes to be made in database
             $hasChanged = true;
             updateDatabase($pdo, $databaseTable, $id, 'biography', $newBiography);
+            $_SESSION['user']['biography'] = $newBiography;
         }
     }
 
@@ -86,6 +88,7 @@ if (isset($_POST) || isset($_FILES)) {
             // sends changes to be made in database
             $hasChanged = true;
             updateDatabase($pdo, $databaseTable, $id, 'email', $newEmail);
+            $_SESSION['user']['email'] = $newEmail;
         } else {
             $_SESSION['errors'][] = "Please enter a valid email.";
             redirect('/profile.php');
