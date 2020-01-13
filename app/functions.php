@@ -352,6 +352,23 @@ if (!function_exists('getPost')) {
     }
 }
 
+if (!function_exists('getUserPosts')) {
+    /**
+     * Gets given users posts from database.
+     * 
+     * @param object $database
+     * @param string $userId
+     *
+     * @return array
+     */
+    function getUserPosts(object $database, string $userId)
+    {
+        $statement = $database->prepare('SELECT * FROM posts WHERE user_id = :user_id ORDER BY id DESC');
+        $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
 
 if (!function_exists('deletePost')) {
     /**
