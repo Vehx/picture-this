@@ -137,12 +137,9 @@ fetch(postsReadUrl)
                     let remove = document.createElement("button");
                     let editForm = document.createElement("form");
 
-                    const editFormTemplate = `<div class="form-group">
-                    <label for="edit-image">Image : </label>
-                    <input type="file" name="edit-image" id="edit-image" accept="jpeg, jpg, png">
-                    </div><!-- /form-group -->
+                    const editFormTemplate = `<input type="hidden" name="post-id" id="post-id" value="${post.id}">
                     <div class="form-group">
-                    <label for="edit-description">Description (optional) : </label>
+                    <label for="edit-description">Description: </label>
                     <input type="text" name="edit-description" id="edit-description" value="${post.description}">
                     </div><!-- /form-group -->
                     <button type="submit" class="ml-1 mt-1 btn btn-primary post__submit-edit-btn">Save</button>`;

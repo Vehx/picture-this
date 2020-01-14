@@ -6,13 +6,7 @@ require __DIR__ . '/../autoload.php';
 
 if (isset($_POST, $_FILES['image'])) {
     $image = $_FILES['image'];
-    $descriptionExists = false;
-
-    // checks if a description were entered and sets a bool to true for use in the database storage code
-    if (isset($_POST['description'])) {
-        $description = filter_var(trim($_POST['description']), FILTER_SANITIZE_STRING);
-        $descriptionExists = true;
-    }
+    $description = filter_var(trim($_POST['description']), FILTER_SANITIZE_STRING);
 
     // we grab the current users id to make the post theirs in the database
     $userId = $_SESSION['user']['id'];
@@ -29,9 +23,7 @@ if (isset($_POST, $_FILES['image'])) {
     $statement = $pdo->prepare('INSERT INTO posts (user_id, image, description) VALUES (:user_id, :image, :description)');
     $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $statement->bindParam(':image', $imagePath, PDO::PARAM_STR);
-    if ($descriptionExists) {
-        $statement->bindParam(':description', $description, PDO::PARAM_STR);
-    }
+    $statement->bindParam(':description', $description, PDO::PARAM_STR);
     $statement->execute();
 }
 redirect('/');

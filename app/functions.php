@@ -308,12 +308,10 @@ if (!function_exists('isImageOk')) {
         // checks size and type of image and creates errors if wrong and redirects back with error message
         if ($imageSize > 2000000) {
             $_SESSION['errors'][] = "It's too big!";
-            // redirect('/');
             return false;
         }
         if ($imageType !== 'image/png' && $imageType !== 'image/jpg' && $imageType !== 'image/jpeg') {
             $_SESSION['errors'][] = "Thats not a valid file type!";
-            // redirect('/');
             return false;
         }
 
