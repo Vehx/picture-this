@@ -130,7 +130,7 @@ fetch(postsReadUrl)
                 newPost.appendChild(likeBox);
 
                 // elements gets made that should only show if post is from current user
-                if (userId === post.user_id) {
+                if (parseInt(userId) === parseInt(post.user_id)) {
                     let postOptions = document.createElement("div");
                     let edit = document.createElement("button");
                     let cancelEdit = document.createElement("button");
