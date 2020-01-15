@@ -20,6 +20,6 @@ if (isset($_POST['edit-description']) && isset($_POST['post-id'])) {
         // sends changes to be made in database
         updateDatabase($pdo, 'posts', $postId, 'description', $newDescription);
     }
-} else {
-    redirect('/');
 }
+
+redirect('/');
