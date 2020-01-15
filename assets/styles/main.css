@@ -3,3 +3,7 @@
 .hidden {
     display: none;
 }
+
+.post__content {
+    max-height: 800px;
+}

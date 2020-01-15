@@ -19,7 +19,7 @@
             <button type="submit" class="btn btn-primary post__submit-btn">Submit post</button>
         </form>
         <button class="btn btn-primary post__create-btn">Create post</button>
-        <button class="btn btn-secondary post__cancel-btn hidden">Cancel</button>
+        <button class="mt-2 btn btn-secondary post__cancel-btn hidden">Cancel</button>
     </section>
     <section class="post__container"></section>
     <script>

@@ -13,7 +13,7 @@ const postForm = document.querySelector(".post__form");
 
 // function to delete post, after its posts to server it hides the post
 const handleRemove = e => {
-    let postId = e.srcElement.parentElement.dataset.id;
+    let postId = e.srcElement.parentElement.parentElement.dataset.id;
 
     const formData = new FormData();
     formData.append("post-id", `${postId}`);
@@ -21,9 +21,9 @@ const handleRemove = e => {
     fetch(postsDeleteUrl, {
         method: "post",
         body: formData
-    }).then(() => {
-        e.srcElement.parentElement.classList.add("hidden");
     });
+    e.srcElement.parentElement.parentElement.classList.remove("d-flex");
+    e.srcElement.parentElement.parentElement.classList.add("hidden");
 };
 
 createPostBtn.addEventListener("click", () => {
@@ -52,20 +52,23 @@ fetch(postsReadUrl)
                 let newPost = document.createElement("div");
 
                 // elements are populated with data and classes
-                newPost.className = "border p-2 my-2 mw-100 mvh-80 post";
+                newPost.className =
+                    "d-flex justify-content-center align-items-center flex-column border border-secondary p-2 my-2 mw-75 mvh-50 post";
                 newPost.setAttribute("data-id", post.id);
 
                 // start of originalPoster box creation
                 let originalPosterBox = document.createElement("div");
                 let originalPosterImg = document.createElement("img");
                 let originalPosterLink = document.createElement("a");
-                originalPosterBox.className = "post__poster-container";
+                originalPosterBox.className =
+                    "d-flex justify-content-center align-items-center align-self-start post__poster-container";
 
                 originalPosterImg.src = post.poster_avatar;
                 originalPosterImg.alt = post.poster_name + "'s avatar image";
-                originalPosterImg.className = "rounded-circle";
-                originalPosterImg.height = "75";
-                originalPosterImg.width = "75";
+                originalPosterImg.className =
+                    "border border-secondary mx-3 rounded-circle";
+                originalPosterImg.height = "50";
+                originalPosterImg.width = "50";
 
                 originalPosterLink.textContent = post.poster_name;
                 originalPosterLink.href = "/profile.php?uid=" + post.user_id;
@@ -79,13 +82,14 @@ fetch(postsReadUrl)
                 let postContentBox = document.createElement("div");
                 let img = document.createElement("img");
                 let p = document.createElement("p");
-                postContentBox.className = "m-1 mvh-75 post__content";
+                postContentBox.className =
+                    "d-flex justify-content-center align-items-start flex-column w-100 m-1 post__content";
 
                 img.src = post.image;
-                img.className = "mw-100 post__image";
+                img.className = "img-fluid post__image";
 
                 p.textContent = post.description;
-                p.className = "post__description";
+                p.className = "mt-3 post__description";
 
                 postContentBox.appendChild(img);
                 postContentBox.appendChild(p);
@@ -97,7 +101,7 @@ fetch(postsReadUrl)
                 let likeBtn = document.createElement("button");
                 let dislikeBtn = document.createElement("button");
 
-                likeBox.className = "mw-50";
+                likeBox.className = "w-100";
 
                 likes.textContent = post.likes;
                 likes.className = "mx-2 post__likes";
@@ -137,8 +141,11 @@ fetch(postsReadUrl)
                     let remove = document.createElement("button");
                     let editForm = document.createElement("form");
 
+                    postOptions.className =
+                        "align-self-start ml-5 post_edit-box";
+
                     const editFormTemplate = `<input type="hidden" name="post-id" id="post-id" value="${post.id}">
-                    <div class="form-group">
+                    <div class="m-3 form-group">
                     <label for="edit-description">Description: </label>
                     <input type="text" name="edit-description" id="edit-description" value="${post.description}">
                     </div><!-- /form-group -->
