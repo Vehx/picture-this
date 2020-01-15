@@ -1,7 +1,5 @@
 "use strict";
 
-console.log("Posts loaded.");
-
 // in this file posts are fetched if any exsists and then made into post elements and placed in the dom post-container
 const postsReadUrl = "/app/posts/read.php";
 const postsUpdateUrl = "/app/posts/update.php";

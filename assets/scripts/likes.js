@@ -1,6 +1,5 @@
 "use strict";
 
-console.log("Likes loaded.");
 // in this file we post liking and disliking stuff to likes.php when user likes or dislikes something
 // we also change the button looks with classes once fetch is done to show user the click did something
 
@@ -15,7 +14,6 @@ const handleLikes = e => {
     const formData = new FormData();
     formData.append("exists", "false");
 
-    // if (currentBtn.classList.contains("btn-primary") === false) {
     if (currentBtn.classList.contains("post__like-btn")) {
         otherBtn = currentBtn.nextElementSibling;
         formData.append("like", `${postId}`);
@@ -24,7 +22,6 @@ const handleLikes = e => {
         otherBtn = currentBtn.previousElementSibling;
         formData.append("dislike", `${postId}`);
     }
-    // } else
     if (currentBtn.classList.contains("btn-primary") === true) {
         formData.append("remove", `${postId}`);
     }

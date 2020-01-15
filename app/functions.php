@@ -39,18 +39,6 @@ if (!function_exists('showErrors')) {
     }
 }
 
-if (!function_exists('isLoggedIn')) {
-    /**
-     * Checks if user is logged in or not, returns true or false.
-     *
-     * @return bool
-     */
-    function isLoggedIn()
-    {
-        // todo add logic for function
-    }
-}
-
 if (!function_exists('guidv4')) {
     /**
      * This creates a uuid for image names using com_create_guid on windows.

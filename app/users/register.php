@@ -4,8 +4,6 @@ declare(strict_types=1);
 require __DIR__ . '/../autoload.php';
 // In this file we store/insert new accounts in the database.
 
-// isLoggedIn();
-
 if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-confirm'])) {
     $name = filter_var(trim($_POST['name']), FILTER_SANITIZE_STRING);
     $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
@@ -18,7 +16,6 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     $_SESSION['registering']['password'] = $password;
     $_SESSION['registering']['password-confirm'] = $passwordConfirm;
 
-    // todo send information back so form doesnt need to be refilled
     // check if name field is empty
     if ($name === '') {
         $_SESSION['errors'][] = "Error: Please enter your name.";
@@ -48,7 +45,6 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     }
 
     // checks if email already is registerd in database
-    // todo make this into a function
     $user = checkEmail($pdo, $email);
     if ($user['email'] === $email) {
         $_SESSION['errors'][] = "Error: Email is already registered.";
@@ -66,7 +62,6 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     $statement->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
     $statement->execute();
 
-    // todo make this just grab last created id
     // new user is grabbed from database to log user in and to verify everything worked
     $statement = $pdo->prepare('SELECT * FROM users WHERE email = :email');
     $statement->bindParam(':email', $email, PDO::PARAM_STR);
