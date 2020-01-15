@@ -370,7 +370,7 @@ if (!function_exists('getUserPosts')) {
 
 if (!function_exists('deletePost')) {
     /**
-     * Deletes post from database.
+     * Deletes post from database and uploads/posts folder.
      * Database to delete from, post id to delete and user id of post owner.
      * 
      * @param object $database
@@ -384,6 +384,9 @@ if (!function_exists('deletePost')) {
         $statement = $database->prepare('DELETE FROM posts WHERE id = :post_id AND user_id = :user_id');
         $statement->bindParam(':post_id', $postId, PDO::PARAM_INT);
         $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
+
+        $post = getPost($database, $postId);
+        unlink(__DIR__ . '/../' . $post['image']);
 
         $statement->execute();
     }
