@@ -40,6 +40,14 @@ or `$ git clone git@github.com:Vehx/picture-this.git` in bash if you use ssh. <b
 * [Bernhard](https://github.com/Vehx)
 
 ## Testers
-* 
+* [Mark Dela Cruz](https://github.com/deinnielle)
+* [Marcus Augustsson](https://github.com/MarcusIsCode)
 
 ## Code review
+by [Mark Dela Cruz](https://github.com/deinnielle)
+
+* Good that you use fetch
+* Good variable names
+* Maybe remove main.js since it is not used
+* Maybe add response message when not logged in likes.php
+* Maybe add validate on email in update.php and register since you can create and update account without a valid email
