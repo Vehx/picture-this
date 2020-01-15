@@ -82,9 +82,6 @@ if (!function_exists('getLikes')) {
      */
     function getLikes(array $posts, string $userId, object $database)
     {
-        // todo add logic for function
-        // needs to work with both likes.phps check for user already liked post
-        // and posts/read.phps check to see how many likes a post has and if one of them is from current user
         $postsWithLikes = [];
         foreach ($posts as $post) {
             $statement = $database->prepare("SELECT count(*) FROM likes WHERE post_id = :post_id AND liked = 'yes'");
@@ -389,5 +386,30 @@ if (!function_exists('deletePost')) {
         $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
 
         $statement->execute();
+    }
+}
+
+if (!function_exists('getPoster')) {
+    /**
+     * Gets each posts posters information, name and avatar and puts it in the post.
+     * @param array $posts
+     * @param object $database
+     *
+     * @return array
+     */
+    function getPoster(array $posts, object $database)
+    {
+        $postsWithPoster = [];
+        foreach ($posts as $post) {
+            $statement = $database->prepare('SELECT * FROM users WHERE id = :id');
+            $statement->bindParam(':id', $post['user_id'], PDO::PARAM_INT);
+            $statement->execute();
+            $poster = $statement->fetch(PDO::FETCH_ASSOC);
+
+            $post['poster_avatar'] = $poster['avatar'];
+            $post['poster_name'] = $poster['name'];
+            $postsWithPoster[] = $post;
+        }
+        return $postsWithPoster;
     }
 }

@@ -14,7 +14,8 @@ if (isset($_SESSION['user'])) {
     $posts = getPosts($pdo);
 
     $postsWithLikes = getLikes($posts, $_SESSION['user']['id'], $pdo);
-    echo json_encode($postsWithLikes);
+    $postsWithLikesAndPoster = getPoster($postsWithLikes, $pdo);
+    echo json_encode($postsWithLikesAndPoster);
 
     header('Content-Type: application/json');
 }
