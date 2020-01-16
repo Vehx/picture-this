@@ -25,14 +25,14 @@ const handleRemove = e => {
 };
 
 createPostBtn.addEventListener("click", () => {
-    console.log("Creating post :)");
+    // console.log("Creating post :)");
     createPostBtn.classList.add("hidden");
     cancelPostBtn.classList.remove("hidden");
     postForm.classList.remove("hidden");
 });
 
 cancelPostBtn.addEventListener("click", () => {
-    console.log("Canceling post making :(");
+    // console.log("Canceling post making :(");
     createPostBtn.classList.remove("hidden");
     cancelPostBtn.classList.add("hidden");
     postForm.classList.add("hidden");
@@ -42,7 +42,7 @@ fetch(postsReadUrl)
     .then(response => response.json())
     .then(posts => {
         const postContainer = document.querySelector(".post__container");
-        console.log(posts);
+        // console.log(posts);
 
         if (!(posts.length === 0)) {
             posts.forEach(post => {
@@ -205,7 +205,7 @@ fetch(postsReadUrl)
                         );
                         e.srcElement.classList.add("hidden");
                         e.srcElement.nextSibling.classList.remove("hidden");
-                        console.log(e.srcElement);
+                        // console.log(e.srcElement);
                     });
                 });
             }
