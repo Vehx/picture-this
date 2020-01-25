@@ -11,21 +11,6 @@ const createPostBtn = document.querySelector(".post__create-btn");
 const cancelPostBtn = document.querySelector(".post__cancel-btn");
 const postForm = document.querySelector(".post__form");
 
-// function to delete post, after its posts to server it hides the post
-const handleRemove = e => {
-    let postId = e.srcElement.parentElement.parentElement.dataset.id;
-
-    const formData = new FormData();
-    formData.append("post-id", `${postId}`);
-
-    fetch(postsDeleteUrl, {
-        method: "post",
-        body: formData
-    });
-    e.srcElement.parentElement.parentElement.classList.remove("d-flex");
-    e.srcElement.parentElement.parentElement.classList.add("hidden");
-};
-
 createPostBtn.addEventListener("click", () => {
     // console.log("Creating post :)");
     createPostBtn.classList.add("hidden");

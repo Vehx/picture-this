@@ -1,3 +1,50 @@
+//function to activate the post__edit-forms to use fetch instead
+const activateEditForms = () => {
+    const postEditForms = document.querySelectorAll(".post__edit-form");
+    if (postEditForms != null) {
+        postEditForms.forEach(postEditForm => {
+            postEditForm.addEventListener("submit", e => {
+                e.preventDefault();
+                const formData = new FormData(postEditForm);
+                fetch("/app/posts/update.php", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(json => {
+                        console.log(json);
+
+                        const postEditBtn = postEditForm.parentElement.querySelector(
+                            ".post__edit-btn"
+                        );
+                        const postCancelEditBtn = postEditForm.parentElement.querySelector(
+                            ".post__cancel-edit-btn"
+                        );
+                        postEditBtn.classList.toggle("hidden");
+                        postCancelEditBtn.classList.toggle("hidden");
+                        postEditForm.classList.add("hidden");
+                        //appenda json description häääääär
+                    });
+            });
+        });
+    }
+};
+
+// function to delete post, after its posts to server it hides the post
+const handleRemove = e => {
+    let postId = e.srcElement.parentElement.parentElement.dataset.id;
+
+    const formData = new FormData();
+    formData.append("post-id", `${postId}`);
+
+    fetch(postsDeleteUrl, {
+        method: "post",
+        body: formData
+    });
+    e.srcElement.parentElement.parentElement.classList.remove("d-flex");
+    e.srcElement.parentElement.parentElement.classList.add("hidden");
+};
+
 //function to create and append all posts
 const createAndAppendPosts = posts => {
     const postContainer = document.querySelector(".post__container");
@@ -191,4 +238,6 @@ const createAndAppendPosts = posts => {
         div.textContent = "There are no posts here yet.";
         postContainer.appendChild(div);
     }
+    //function to activate the post__edit-forms to use fetch instead
+    activateEditForms();
 };

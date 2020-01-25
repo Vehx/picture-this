@@ -9,6 +9,12 @@
             </li><!-- /nav-item -->
         <?php endif; ?>
 
+        <?php if (isset($_SESSION['user'])) : ?>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $_SERVER['SCRIPT_NAME'] === '/search.php' ? 'active' : ''; ?>" href="search.php">Search</a>
+            </li><!-- /nav-item -->
+        <?php endif; ?>
+
         <li class="nav-item">
             <?php if (isset($_SESSION['user'])) : ?>
                 <a class="nav-link" href="/app/users/logout.php">Logout</a>

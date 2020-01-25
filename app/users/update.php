@@ -84,7 +84,7 @@ if (isset($_POST) || isset($_FILES)) {
         // checks database for email, to make sure it isn't a duplicate
         $emailCheckUser = checkEmail($pdo, $newEmail);
 
-        // checks that new email is not same as old email 
+        // checks that new email is not same as old email
         if (!($newEmail === $oldEmail)) {
             // not an empty string and not an already existing email
             if ($newEmail != '' && !isset($emailCheckUser['email'])) {
