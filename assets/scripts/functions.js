@@ -11,19 +11,20 @@ const activateEditForms = () => {
                     body: formData
                 })
                     .then(response => response.json())
-                    .then(json => {
-                        console.log(json);
-
+                    .then(newDescription => {
+                        const description = postEditForm.parentElement.parentElement.querySelector(
+                            ".post__content .post__description"
+                        );
                         const postEditBtn = postEditForm.parentElement.querySelector(
                             ".post__edit-btn"
                         );
                         const postCancelEditBtn = postEditForm.parentElement.querySelector(
                             ".post__cancel-edit-btn"
                         );
+                        description.textContent = newDescription;
                         postEditBtn.classList.toggle("hidden");
                         postCancelEditBtn.classList.toggle("hidden");
                         postEditForm.classList.add("hidden");
-                        //appenda json description häääääär
                     });
             });
         });
