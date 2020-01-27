@@ -435,3 +435,30 @@ if (!function_exists('followExists')) {
         }
     }
 }
+
+if (!function_exists('getPostsById')) {
+
+    /**
+     * Get all posts from a user
+     *
+     * @param string $userId
+     * @param PDO $database
+     * @return array
+     */
+    function getPostsById(string $userId, PDO $database): array
+    {
+        $statement = $database->prepare('SELECT * FROM posts WHERE user_id = :userId');
+
+        if (!$statement) {
+            die(var_dump($database->errorInfo()));
+        }
+
+        $statement->execute([
+            ':userId' => $userId
+        ]);
+
+        $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $posts;
+    }
+}

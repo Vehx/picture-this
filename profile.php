@@ -55,9 +55,12 @@
 
 <?php endif; ?>
 
+
 <?php showErrors(); ?>
 
 </article>
+
+<section class="post__container"></section>
 
 <script src="assets/scripts/profile.js"></script>
 <?php require __DIR__ . '/views/footer.php'; ?>
