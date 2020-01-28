@@ -96,7 +96,7 @@ if (!function_exists('getUserLikes')) {
      * Checks if user has liked/disliked post previously.
      * Takes id of post and user to check, column to check liked/disliked and database.
      * Returns result stored in column, yes or no in case of liked/disliked.
-     * 
+     *
      * @param object $database
      * @param int $postId
      * @param string $userId
@@ -128,12 +128,12 @@ if (!function_exists('removeLike')) {
     /**
      * Removes like from database. Send in database, postId and userId.
      * Function will then query database with delete statement.
-     * 
+     *
      * @param object $database
      *
      * @param string $postId
      * @param string $userId
-     * 
+     *
      * @return void
      */
     function removeLike(object $database, string $postId, string $userId)
@@ -152,15 +152,15 @@ if (!function_exists('setLike')) {
      * liked and disliked can be string yes or null.
      * likedType and dislikedType are pdo param variables,
      * either PDO::PARAM_STR or PDO::PARAM_NULL depending on what like and disliked is set to.
-     * 
+     *
      * @param object $statment
-     * 
+     *
      * @param string $postId
      * @param string $userId
-     * 
+     *
      * @param string $liked
      * @param int $likedType
-     * 
+     *
      * @param string $disliked
      * @param int $dislikedType
      *
@@ -180,7 +180,7 @@ if (!function_exists('setLike')) {
 if (!function_exists('getProfile')) {
     /**
      * Gets profile information from the database about the user sent in.
-     * 
+     *
      * @param object $database
      * @param string $id
      *
@@ -202,7 +202,7 @@ if (!function_exists('getProfile')) {
 if (!function_exists('updateDatabase')) {
     /**
      * Updates profile information in the database with the user input sent in.
-     * 
+     *
      * @param object $database
      * @param string $id
      * @param string $column
@@ -224,7 +224,7 @@ if (!function_exists('updateDatabase')) {
 if (!function_exists('checkEmail')) {
     /**
      * Gets user by email and returns it, can be used to check if email is already in use.
-     * 
+     *
      * @param object $database
      * @param string $email
      *
@@ -245,7 +245,7 @@ if (!function_exists('prepareImage')) {
     /**
      * Uploads image and gives it a uuid name.
      * Returns path to set in database.
-     * 
+     *
      * @param string $imageName
      * @param string $imageTmpName
      * @param bool $isAvatar
@@ -281,7 +281,7 @@ if (!function_exists('isImageOk')) {
      * Checks if image size and image type is ok.
      * Returns false if either is not after setting an error in $_SESSION['errors'].
      * Returns true if image is ok.
-     * 
+     *
      * @param int $imageSize
      * @param string $imageType
      *
@@ -307,7 +307,7 @@ if (!function_exists('isImageOk')) {
 if (!function_exists('getPosts')) {
     /**
      * Gets posts from database.
-     * 
+     *
      * @param object $database
      *
      * @return array
@@ -323,7 +323,7 @@ if (!function_exists('getPosts')) {
 if (!function_exists('getPost')) {
     /**
      * Gets post from database.
-     * 
+     *
      * @param object $database
      * @param string $postId
      *
@@ -341,7 +341,7 @@ if (!function_exists('getPost')) {
 if (!function_exists('getUserPosts')) {
     /**
      * Gets given users posts from database.
-     * 
+     *
      * @param object $database
      * @param string $userId
      *
@@ -360,7 +360,7 @@ if (!function_exists('deletePost')) {
     /**
      * Deletes post from database and uploads/posts folder.
      * Database to delete from, post id to delete and user id of post owner.
-     * 
+     *
      * @param object $database
      * @param string $postId
      * @param string $userId
@@ -402,5 +402,36 @@ if (!function_exists('getPoster')) {
             $postsWithPoster[] = $post;
         }
         return $postsWithPoster;
+    }
+}
+
+if (!function_exists('followExists')) {
+
+    /**
+     * Check if a user is following another user
+     *
+     * @param string $followerId
+     * @param string $followingId
+     * @param PDO $database
+     * @return boolean
+     */
+    function followExists(string $followerId, string $followingId, PDO $database): bool
+    {
+        $statement = $database->prepare('SELECT * FROM follows WHERE follower_id = :followerId AND following_id = :followingId');
+
+        if (!$statement) {
+            die(var_dump($database->errorInfo()));
+        }
+
+        $statement->execute([
+            ':followerId' => $followerId,
+            ':followingId' => $followingId
+        ]);
+
+        if ($statement->fetch(PDO::FETCH_ASSOC) !== false) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

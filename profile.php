@@ -43,12 +43,28 @@
         <button class="mt-2 btn btn-secondary profile__cancel-btn hidden">Cancel</button>
 
         <button class="btn btn-primary profile__edit-btn">Edit</button>
-
-        <script src="assets/scripts/profile.js"></script>
+    <?php else : ?>
+        <form action="/app/users/follows.php" method="post">
+            <input type="hidden" name="id" value="<?php echo $_GET['uid']; ?>">
+            <?php if (followExists($_SESSION['user']['id'], $_GET['uid'], $pdo)) : ?>
+                <button type="submit" class="btn btn-primary">Unfollow</button>
+            <?php else : ?>
+                <button type="submit" class="btn btn-primary">Follow</button>
+        </form>
     <?php endif; ?>
 
-    <?php showErrors(); ?>
+<?php endif; ?>
+
+<?php showErrors(); ?>
 
 </article>
+
+<section class="post__container"></section>
+
+<script>
+    const userId = "<?php echo $_SESSION['user']['id']; ?>";
+</script>
+
+<input class="profile-id" type="hidden" value="<?php echo $_SESSION['profile']['id']; ?>">
 
 <?php require __DIR__ . '/views/footer.php'; ?>
