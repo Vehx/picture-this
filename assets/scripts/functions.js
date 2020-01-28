@@ -1,4 +1,46 @@
 //function to activate the post__edit-forms to use fetch instead
+const likeUrl = "/app/likes/likes.php";
+
+const handleLikes = e => {
+    let postId = e.srcElement.parentElement.parentElement.dataset.id;
+    let currentBtn = e.srcElement;
+    let otherBtn;
+
+    console.log("Doing stuff on post : " + postId);
+    const formData = new FormData();
+    formData.append("exists", "false");
+
+    if (currentBtn.classList.contains("post__like-btn")) {
+        otherBtn = currentBtn.nextElementSibling;
+        formData.append("like", `${postId}`);
+    }
+    if (currentBtn.classList.contains("post__dislike-btn")) {
+        otherBtn = currentBtn.previousElementSibling;
+        formData.append("dislike", `${postId}`);
+    }
+    if (currentBtn.classList.contains("btn-primary") === true) {
+        formData.append("remove", `${postId}`);
+    }
+    if (otherBtn.classList.contains("btn-primary") === true) {
+        formData.set("exists", "true");
+    }
+
+    fetch(likeUrl, {
+        method: "post",
+        body: formData
+    })
+        .then(response => response.json())
+        .then(response => {
+            console.log(response);
+            currentBtn.classList.toggle("btn-secondary");
+            currentBtn.classList.toggle("btn-primary");
+            if (otherBtn != undefined) {
+                otherBtn.classList.remove("btn-primary");
+                otherBtn.classList.add("btn-secondary");
+            }
+        });
+};
+
 const activateEditForms = () => {
     const postEditForms = document.querySelectorAll(".post__edit-form");
     if (postEditForms != null) {
@@ -147,10 +189,10 @@ const createAndAppendPosts = posts => {
 
                 postOptions.className = "align-self-start ml-5 post_edit-box";
 
-                const editFormTemplate = `<input type="hidden" name="post-id" id="post-id" value="${post.id}">
+                const editFormTemplate = `<input type="hidden" name="post-id" value="${post.id}">
                 <div class="m-3 form-group">
                 <label for="edit-description">Description: </label>
-                <input type="text" name="edit-description" id="edit-description" value="${post.description}">
+                <input type="text" name="edit-description" value="${post.description}">
                 </div><!-- /form-group -->
                 <button type="submit" class="ml-1 mt-1 btn btn-primary post__submit-edit-btn">Save</button>`;
 

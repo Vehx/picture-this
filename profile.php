@@ -55,12 +55,16 @@
 
 <?php endif; ?>
 
-
 <?php showErrors(); ?>
 
 </article>
 
 <section class="post__container"></section>
 
-<script src="assets/scripts/profile.js"></script>
+<script>
+    const userId = "<?php echo $_SESSION['user']['id']; ?>";
+</script>
+
+<input class="profile-id" type="hidden" value="<?php echo $_SESSION['profile']['id']; ?>">
+
 <?php require __DIR__ . '/views/footer.php'; ?>

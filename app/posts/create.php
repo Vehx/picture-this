@@ -3,7 +3,6 @@
 declare(strict_types=1);
 require __DIR__ . '/../autoload.php';
 // In this file we store/insert new posts in the database.
-
 if (isset($_POST, $_FILES['image'])) {
     $image = $_FILES['image'];
     $description = filter_var(trim($_POST['description']), FILTER_SANITIZE_STRING);
