@@ -21,7 +21,7 @@ if (!function_exists('redirect')) {
 if (!function_exists('showErrors')) {
     /**
      * If errors exists in $_SESSION['errors'] this function echo's them out.
-     * When done it empties $_SESSION['errors']
+     * When done it empties $_SESSION['errors'].
      *
      * @return void
      */
@@ -45,12 +45,14 @@ if (!function_exists('guidv4')) {
      * With a linux fallback using openssl.
      *
      * Returns generated uuid as a string.
+     *
      * @return string
      */
     function guidv4()
     {
-        if (function_exists('com_create_guid') === true)
+        if (function_exists('com_create_guid') === true) {
             return trim(com_create_guid(), '{}');
+        }
 
         $data = openssl_random_pseudo_bytes(16);
         $data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0100
@@ -62,7 +64,8 @@ if (!function_exists('guidv4')) {
 if (!function_exists('getLikes')) {
     /**
      * Checks if user has liked/disliked post previously.
-     * @param array $posts
+     *
+     * @param array  $posts
      * @param string $userId
      * @param object $database
      *
@@ -87,6 +90,7 @@ if (!function_exists('getLikes')) {
             $post['disliked'] = getUserLikes($database, $post['id'], $userId, 'disliked');
             $postsWithLikes[] = $post;
         }
+
         return $postsWithLikes;
     }
 }
@@ -98,7 +102,7 @@ if (!function_exists('getUserLikes')) {
      * Returns result stored in column, yes or no in case of liked/disliked.
      *
      * @param object $database
-     * @param int $postId
+     * @param int    $postId
      * @param string $userId
      * @param string $column
      *
@@ -106,12 +110,12 @@ if (!function_exists('getUserLikes')) {
      */
     function getUserLikes(object $database, int $postId, string $userId, string $column)
     {
-        $query = "SELECT count(*) FROM likes WHERE post_id = :post_id AND user_id = :user_id AND ";
+        $query = 'SELECT count(*) FROM likes WHERE post_id = :post_id AND user_id = :user_id AND ';
         if ($column === 'liked') {
-            $query = $query . "liked = 'yes'";
+            $query = $query."liked = 'yes'";
         }
         if ($column === 'disliked') {
-            $query = $query . "disliked = 'yes'";
+            $query = $query."disliked = 'yes'";
         }
         $statement = $database->prepare($query);
         $statement->bindParam(':post_id', $postId, PDO::PARAM_INT);
@@ -120,6 +124,7 @@ if (!function_exists('getUserLikes')) {
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         $userLikesOnPost = $result['count(*)'];
+
         return $userLikesOnPost;
     }
 }
@@ -130,7 +135,6 @@ if (!function_exists('removeLike')) {
      * Function will then query database with delete statement.
      *
      * @param object $database
-     *
      * @param string $postId
      * @param string $userId
      *
@@ -154,15 +158,12 @@ if (!function_exists('setLike')) {
      * either PDO::PARAM_STR or PDO::PARAM_NULL depending on what like and disliked is set to.
      *
      * @param object $statment
-     *
      * @param string $postId
      * @param string $userId
-     *
      * @param string $liked
-     * @param int $likedType
-     *
+     * @param int    $likedType
      * @param string $disliked
-     * @param int $dislikedType
+     * @param int    $dislikedType
      *
      * @return void
      */
@@ -237,6 +238,7 @@ if (!function_exists('checkEmail')) {
         $statement->bindParam(':email', $email, PDO::PARAM_STR);
 
         $statement->execute();
+
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 }
@@ -248,7 +250,7 @@ if (!function_exists('prepareImage')) {
      *
      * @param string $imageName
      * @param string $imageTmpName
-     * @param bool $isAvatar
+     * @param bool   $isAvatar
      *
      * @return string
      */
@@ -262,16 +264,17 @@ if (!function_exists('prepareImage')) {
         // image name is set to a uuid before stored in uploads folder and database
         $uuidName = explode('.', $imageName);
         $uuidName[0] = guidv4();
-        $imageRealPath = "app/database/uploads/$type/" . $uuidName[0] . '.' . $uuidName[1];
+        $imageRealPath = "app/database/uploads/$type/".$uuidName[0].'.'.$uuidName[1];
 
         // the image path is set with its uuid name and saved in variable for use when storing information in database
-        $imageRelativePath = "../database/uploads/$type/" . $uuidName[0] . '.' . $uuidName[1];
+        $imageRelativePath = "../database/uploads/$type/".$uuidName[0].'.'.$uuidName[1];
 
         // image is moved to storage in file structure
         move_uploaded_file(
             $imageTmpName,
             $imageRelativePath
         );
+
         return $imageRealPath;
     }
 }
@@ -282,7 +285,7 @@ if (!function_exists('isImageOk')) {
      * Returns false if either is not after setting an error in $_SESSION['errors'].
      * Returns true if image is ok.
      *
-     * @param int $imageSize
+     * @param int    $imageSize
      * @param string $imageType
      *
      * @return bool
@@ -293,10 +296,12 @@ if (!function_exists('isImageOk')) {
         // checks size and type of image and creates errors if wrong and redirects back with error message
         if ($imageSize > 2000000) {
             $_SESSION['errors'][] = "It's too big!";
+
             return false;
         }
         if ($imageType !== 'image/png' && $imageType !== 'image/jpg' && $imageType !== 'image/jpeg') {
-            $_SESSION['errors'][] = "Thats not a valid file type!";
+            $_SESSION['errors'][] = 'Thats not a valid file type!';
+
             return false;
         }
 
@@ -316,6 +321,7 @@ if (!function_exists('getPosts')) {
     {
         $statement = $database->prepare('SELECT * FROM posts ORDER BY id DESC');
         $statement->execute();
+
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }
@@ -334,6 +340,7 @@ if (!function_exists('getPost')) {
         $statement = $database->prepare('SELECT * FROM posts WHERE id = :id');
         $statement->bindParam(':id', $postId, PDO::PARAM_INT);
         $statement->execute();
+
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 }
@@ -352,6 +359,7 @@ if (!function_exists('getUserPosts')) {
         $statement = $database->prepare('SELECT * FROM posts WHERE user_id = :user_id ORDER BY id DESC');
         $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
         $statement->execute();
+
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }
@@ -374,7 +382,7 @@ if (!function_exists('deletePost')) {
         $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
 
         $post = getPost($database, $postId);
-        unlink(__DIR__ . '/../' . $post['image']);
+        unlink(__DIR__.'/../'.$post['image']);
 
         $statement->execute();
     }
@@ -383,7 +391,8 @@ if (!function_exists('deletePost')) {
 if (!function_exists('getPoster')) {
     /**
      * Gets each posts posters information, name and avatar and puts it in the post.
-     * @param array $posts
+     *
+     * @param array  $posts
      * @param object $database
      *
      * @return array
@@ -401,6 +410,7 @@ if (!function_exists('getPoster')) {
             $post['poster_name'] = $poster['name'];
             $postsWithPoster[] = $post;
         }
+
         return $postsWithPoster;
     }
 }
@@ -408,12 +418,13 @@ if (!function_exists('getPoster')) {
 if (!function_exists('followExists')) {
 
     /**
-     * Check if a user is following another user
+     * Check if a user is following another user.
      *
      * @param string $followerId
      * @param string $followingId
-     * @param PDO $database
-     * @return boolean
+     * @param PDO    $database
+     *
+     * @return bool
      */
     function followExists(string $followerId, string $followingId, PDO $database): bool
     {
@@ -424,8 +435,8 @@ if (!function_exists('followExists')) {
         }
 
         $statement->execute([
-            ':followerId' => $followerId,
-            ':followingId' => $followingId
+            ':followerId'  => $followerId,
+            ':followingId' => $followingId,
         ]);
 
         if ($statement->fetch(PDO::FETCH_ASSOC) !== false) {

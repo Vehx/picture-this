@@ -1,5 +1,5 @@
-<?php require __DIR__ . '/views/header.php'; ?>
-<?php require __DIR__ . '/app/users/read.php'; ?>
+<?php require __DIR__.'/views/header.php'; ?>
+<?php require __DIR__.'/app/users/read.php'; ?>
 
 <article>
 
@@ -21,8 +21,8 @@
     </p>
 
     <?php
-    if ($_SESSION['user']['id'] === $_SESSION['profile']['id']) :
-    ?>
+    if ($_SESSION['user']['id'] === $_SESSION['profile']['id']) {
+        ?>
         <form action="app/users/update.php" method="POST" enctype="multipart/form-data" class="profile__form hidden">
             <label class="profile__name-label" for="name">Name :</label>
             <input class="profile__name-input" type="text" id="name" name="name" value="<?php echo $name; ?>">
@@ -43,17 +43,18 @@
         <button class="mt-2 btn btn-secondary profile__cancel-btn hidden">Cancel</button>
 
         <button class="btn btn-primary profile__edit-btn">Edit</button>
-    <?php else : ?>
+    <?php
+    } else { ?>
         <form action="/app/users/follows.php" method="post">
             <input type="hidden" name="id" value="<?php echo $_GET['uid']; ?>">
-            <?php if (followExists($_SESSION['user']['id'], $_GET['uid'], $pdo)) : ?>
+            <?php if (followExists($_SESSION['user']['id'], $_GET['uid'], $pdo)) { ?>
                 <button type="submit" class="btn btn-primary">Unfollow</button>
-            <?php else : ?>
+            <?php } else { ?>
                 <button type="submit" class="btn btn-primary">Follow</button>
         </form>
-    <?php endif; ?>
+    <?php } ?>
 
-<?php endif; ?>
+<?php } ?>
 
 <?php showErrors(); ?>
 
@@ -67,4 +68,4 @@
 
 <input class="profile-id" type="hidden" value="<?php echo $_SESSION['profile']['id']; ?>">
 
-<?php require __DIR__ . '/views/footer.php'; ?>
+<?php require __DIR__.'/views/footer.php'; ?>

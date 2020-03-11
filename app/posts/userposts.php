@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require __DIR__ . '/../autoload.php';
+require __DIR__.'/../autoload.php';
 
 if (!isset($_SESSION['user'])) {
     redirect('/');
@@ -21,7 +21,7 @@ if (isset($_POST['id'])) {
     }
 
     $statement->execute([
-        ':userId' => $userId
+        ':userId' => $userId,
     ]);
 
     $posts = $statement->fetchAll(PDO::FETCH_ASSOC);

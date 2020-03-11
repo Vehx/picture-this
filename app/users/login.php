@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require __DIR__ . '/../autoload.php';
+require __DIR__.'/../autoload.php';
 // In this file we login users.
 
 // this prevents logged in users to login again
@@ -27,7 +27,7 @@ if (isset($_POST['email'], $_POST['password'])) {
     // checks if a user was not found in the database
     // redirects with error if user was not found
     if (!$user) {
-        $_SESSION['errors'][] = "Error: Incorrect email and/or password.";
+        $_SESSION['errors'][] = 'Error: Incorrect email and/or password.';
         redirect('/login.php');
     }
 
@@ -38,7 +38,7 @@ if (isset($_POST['email'], $_POST['password'])) {
         unset($user['password']);
         $_SESSION['user'] = $user;
     } else {
-        $_SESSION['errors'][] = "Error: Incorrect email and/or password.";
+        $_SESSION['errors'][] = 'Error: Incorrect email and/or password.';
         redirect('/login.php');
     }
 }

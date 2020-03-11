@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require __DIR__ . '/../autoload.php';
+require __DIR__.'/../autoload.php';
 // In this file we add or remove likes from the database.
 
 if (!isset($_SESSION['user'])) {
@@ -42,14 +42,14 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
                 $likedType = PDO::PARAM_STR;
                 $disliked = '';
                 $dislikedType = PDO::PARAM_NULL;
-                $likesState = $postId . ' is liked.';
+                $likesState = $postId.' is liked.';
             }
             if ($action === 'dislike') {
                 $liked = '';
                 $likedType = PDO::PARAM_NULL;
                 $disliked = 'yes';
                 $dislikedType = PDO::PARAM_STR;
-                $likesState = $postId . ' is disliked.';
+                $likesState = $postId.' is disliked.';
             }
 
             // send info to function that binds parameters to statement and executes it
@@ -58,10 +58,9 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
 
         if ($action === 'remove') {
             removeLike($pdo, $postId, $userId);
-            $likesState = $postId . ' is removed.';
+            $likesState = $postId.' is removed.';
         }
     } else {
-
         if ($action === 'like' || $action === 'dislike') {
             // prepares statement for liking/disliking
             $statement = $pdo->prepare('INSERT INTO likes (post_id, user_id, liked, disliked) VALUES (:post_id, :user_id, :liked, :disliked)');
@@ -72,14 +71,14 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
                 $likedType = PDO::PARAM_STR;
                 $disliked = '';
                 $dislikedType = PDO::PARAM_NULL;
-                $likesState = $postId . ' is liked.';
+                $likesState = $postId.' is liked.';
             }
             if ($action === 'dislike') {
                 $liked = '';
                 $likedType = PDO::PARAM_NULL;
                 $disliked = 'yes';
                 $dislikedType = PDO::PARAM_STR;
-                $likesState = $postId . ' is disliked.';
+                $likesState = $postId.' is disliked.';
             }
 
             // send info to function that binds parameters to statement and executes it
@@ -88,7 +87,7 @@ if (isset($_POST['like']) || isset($_POST['dislike']) || isset($_POST['remove'])
 
         if ($action === 'remove') {
             removeLike($pdo, $postId, $userId);
-            $likesState = $postId . ' is removed.';
+            $likesState = $postId.' is removed.';
         }
     }
 
