@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 // In this file we get info on user profile from the database.
-require __DIR__ . '/../autoload.php';
+require __DIR__.'/../autoload.php';
 
 if (!isset($_SESSION['user'])) {
     redirect('/');
@@ -22,8 +22,8 @@ if (isset($_POST['id'])) {
         }
 
         $statement->execute([
-            ':followerId' => $followerId,
-            ':followingId' => $followingId
+            ':followerId'  => $followerId,
+            ':followingId' => $followingId,
         ]);
     } else {
         $statement = $pdo->prepare('INSERT INTO follows (follower_id, following_id) VALUES (:followerId, :followingId)');
@@ -33,9 +33,9 @@ if (isset($_POST['id'])) {
         }
 
         $statement->execute([
-            ':followerId' => $followerId,
-            ':followingId' => $followingId
+            ':followerId'  => $followerId,
+            ':followingId' => $followingId,
         ]);
     }
-    redirect('/profile.php?uid=' . $followingId);
+    redirect('/profile.php?uid='.$followingId);
 }

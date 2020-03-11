@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require __DIR__ . '/../autoload.php';
+require __DIR__.'/../autoload.php';
 // In this file we store/insert new accounts in the database.
 
 if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-confirm'])) {
@@ -18,21 +18,21 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
 
     // check if name field is empty
     if ($name === '') {
-        $_SESSION['errors'][] = "Error: Please enter your name.";
+        $_SESSION['errors'][] = 'Error: Please enter your name.';
         unset($_SESSION['registering']['name']);
         redirect('/register.php');
     }
 
     // check if email is valid and not empty
     if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $email === '') {
-        $_SESSION['errors'][] = "Error: Please enter a valid email.";
+        $_SESSION['errors'][] = 'Error: Please enter a valid email.';
         unset($_SESSION['registering']['email']);
         redirect('/register.php');
     }
 
     // check that password is 4 characters or longer
     if (strlen($password) < 4 || strlen($passwordConfirm) < 4) {
-        $_SESSION['errors'][] = "Error: Password needs to be 4 characters or longer.";
+        $_SESSION['errors'][] = 'Error: Password needs to be 4 characters or longer.';
         unset($_SESSION['registering']['password'], $_SESSION['registering']['password-confirm']);
         redirect('/register.php');
     }
@@ -47,7 +47,7 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
     // checks if email already is registerd in database
     $user = checkEmail($pdo, $email);
     if ($user['email'] === $email) {
-        $_SESSION['errors'][] = "Error: Email is already registered.";
+        $_SESSION['errors'][] = 'Error: Email is already registered.';
         unset($_SESSION['registering']['email']);
         redirect('/register.php');
     }
@@ -72,7 +72,7 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
         // uncomment this later
         // $_SESSION['errors'][] = "Error: Internal server error.";
 
-        $_SESSION['errors'][] = "Error: Something went wrong when fetching the new user.";
+        $_SESSION['errors'][] = 'Error: Something went wrong when fetching the new user.';
         redirect('/register.php');
     }
 
@@ -83,7 +83,7 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password-
         // uncomment this later
         // $_SESSION['errors'][] = "Error: Internal server error.";
 
-        $_SESSION['errors'][] = "Error: Password missmatch in database.";
+        $_SESSION['errors'][] = 'Error: Password missmatch in database.';
         redirect('/register.php');
     }
     // deleting saved information as everything passed without errors

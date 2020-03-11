@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require __DIR__ . '/../autoload.php';
+require __DIR__.'/../autoload.php';
 
 if (!isset($_SESSION['user'])) {
     redirect('/');
@@ -16,7 +16,7 @@ if (isset($_POST['search'])) {
         exit;
     }
 
-    $search = "%" . $search . "%";
+    $search = '%'.$search.'%';
 
     $statement = $pdo->prepare('SELECT * FROM posts WHERE description LIKE :search');
 
@@ -27,7 +27,7 @@ if (isset($_POST['search'])) {
     }
 
     $statement->execute([
-        ':search' => $search
+        ':search' => $search,
     ]);
 
     $posts = $statement->fetchAll(PDO::FETCH_ASSOC);

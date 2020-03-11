@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require __DIR__ . '/../autoload.php';
+require __DIR__.'/../autoload.php';
 // In this file we update a users information in the database.
 
 if (!isset($_SESSION['user'])) {
@@ -51,7 +51,7 @@ if (isset($_POST) || isset($_FILES)) {
 
                 // deletes old avatar from uploads folder
                 if ($oldAvatar != '') {
-                    unlink(__DIR__ . '/../../' . $oldAvatar);
+                    unlink(__DIR__.'/../../'.$oldAvatar);
                 }
 
                 // sends changes to be made in database
@@ -94,7 +94,7 @@ if (isset($_POST) || isset($_FILES)) {
                 updateDatabase($pdo, $databaseTable, $id, 'email', $newEmail);
                 $_SESSION['user']['email'] = $newEmail;
             } else {
-                $_SESSION['errors'][] = "Please enter a valid email.";
+                $_SESSION['errors'][] = 'Please enter a valid email.';
                 redirect('/profile.php');
             }
         }
@@ -115,7 +115,7 @@ if (isset($_POST) || isset($_FILES)) {
 
                 // check that password is 4 characters or longer
                 if (strlen($newPassword) < 4 || strlen($newPasswordConfirm) < 4) {
-                    $_SESSION['errors'][] = "Error: Password needs to be 4 characters or longer.";
+                    $_SESSION['errors'][] = 'Error: Password needs to be 4 characters or longer.';
                     redirect('/password.php');
                 }
 
@@ -133,13 +133,13 @@ if (isset($_POST) || isset($_FILES)) {
                 updateDatabase($pdo, $databaseTable, $id, 'password', $hashedPassword);
             } else {
                 // if new password or new password confirm wasn't sent in, user is sent back with an error
-                $_SESSION['errors'][] = "Please enter a new password and confirm it.";
+                $_SESSION['errors'][] = 'Please enter a new password and confirm it.';
                 unset($user);
                 redirect('/password.php');
             }
         } else {
             // if current password was incorrect, user is sent back with an error
-            $_SESSION['errors'][] = "Current password is incorrect.";
+            $_SESSION['errors'][] = 'Current password is incorrect.';
             unset($user);
             redirect('/password.php');
         }
@@ -147,7 +147,7 @@ if (isset($_POST) || isset($_FILES)) {
 
     if ($hasChanged) {
         // sends a message as an error to let user know information has been saved
-        $_SESSION['errors'][] = "Changes have been saved.";
+        $_SESSION['errors'][] = 'Changes have been saved.';
     }
 
     redirect('/profile.php');
